@@ -1,0 +1,378 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Users/johnmccormick/githubFolder/econCapstone/zillow2.txt
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 2 Feb 2024, 12:13:31
+{txt}
+{com}. import delimited "cleanedZillowData.csv"
+{res}{txt}(encoding automatically selected: ISO-8859-1)
+{text}(25 vars, 5,301 obs)
+
+{com}. 
+. // Simple regression
+. reg pct_sold_below_list mean_days_pending, r
+
+{txt}Linear regression                               Number of obs     = {res}     5,172
+                                                {txt}F(1, 5170)        =  {res}  6102.17
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.7043
+                                                {txt}Root MSE          =    {res} .08563
+
+{txt}{hline 18}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 19}{c |}{col 31}    Robust
+{col 1}pct_sold_below_~t{col 19}{c |} Coefficient{col 31}  std. err.{col 43}      t{col 51}   P>|t|{col 59}     [95% con{col 72}f. interval]
+{hline 18}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+mean_days_pending {c |}{col 19}{res}{space 2} .0065718{col 31}{space 2} .0000841{col 42}{space 1}   78.12{col 51}{space 3}0.000{col 59}{space 4} .0064068{col 72}{space 3} .0067367
+{txt}{space 12}_cons {c |}{col 19}{res}{space 2} .1914648{col 31}{space 2} .0032384{col 42}{space 1}   59.12{col 51}{space 3}0.000{col 59}{space 4} .1851162{col 72}{space 3} .1978134
+{txt}{hline 18}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. eststo simple_reg 
+{txt}
+{com}. 
+. // Multivariate regression
+. reg pct_sold_below_list mean_days_pending zhvi median_list_price median_sale_price invt_for_sale sales_count_nowcast, r
+
+{txt}Linear regression                               Number of obs     = {res}     5,164
+                                                {txt}F(6, 5157)        =  {res}  1563.39
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.7388
+                                                {txt}Root MSE          =    {res} .08055
+
+{txt}{hline 20}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 21}{c |}{col 33}    Robust
+{col 1}pct_sold_below_list{col 21}{c |} Coefficient{col 33}  std. err.{col 45}      t{col 53}   P>|t|{col 61}     [95% con{col 74}f. interval]
+{hline 20}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mean_days_pending {c |}{col 21}{res}{space 2} .0056826{col 33}{space 2}  .000104{col 44}{space 1}   54.65{col 53}{space 3}0.000{col 61}{space 4} .0054787{col 74}{space 3} .0058864
+{txt}{space 15}zhvi {c |}{col 21}{res}{space 2} 6.43e-08{col 33}{space 2} 5.74e-08{col 44}{space 1}    1.12{col 53}{space 3}0.263{col 61}{space 4}-4.82e-08{col 74}{space 3} 1.77e-07
+{txt}{space 2}median_list_price {c |}{col 21}{res}{space 2} 6.62e-07{col 33}{space 2} 4.55e-08{col 44}{space 1}   14.54{col 53}{space 3}0.000{col 61}{space 4} 5.73e-07{col 74}{space 3} 7.51e-07
+{txt}{space 2}median_sale_price {c |}{col 21}{res}{space 2}-8.46e-07{col 33}{space 2} 7.28e-08{col 44}{space 1}  -11.62{col 53}{space 3}0.000{col 61}{space 4}-9.89e-07{col 74}{space 3}-7.04e-07
+{txt}{space 6}invt_for_sale {c |}{col 21}{res}{space 2} 2.07e-06{col 33}{space 2} 4.01e-07{col 44}{space 1}    5.17{col 53}{space 3}0.000{col 61}{space 4} 1.29e-06{col 74}{space 3} 2.86e-06
+{txt}sales_count_nowcast {c |}{col 21}{res}{space 2}-7.86e-06{col 33}{space 2} 1.24e-06{col 44}{space 1}   -6.34{col 53}{space 3}0.000{col 61}{space 4}-.0000103{col 74}{space 3}-5.43e-06
+{txt}{space 14}_cons {c |}{col 21}{res}{space 2} .2448595{col 33}{space 2} .0050453{col 44}{space 1}   48.53{col 53}{space 3}0.000{col 61}{space 4} .2349685{col 74}{space 3} .2547505
+{txt}{hline 20}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. eststo multi_reg
+{txt}
+{com}. 
+. // Fixed Effects 
+. gen year_state = year*state
+{txt}
+{com}. xtset year_state
+
+{txt}{col 1}Panel variable: {res}year_state{txt} (unbalanced)
+
+{com}. xtreg pct_sold_below_list mean_days_pending zhvi median_list_price median_sale_price invt_for_sale sales_count_nowcast, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}     5,164
+{txt}Group variable: {res}year_state{txt}{col 49}Number of groups{col 67}={col 69}{res}       228
+
+{txt}R-squared:{col 49}Obs per group:
+     Within  = {res}0.6095{col 63}{txt}min{col 67}={col 69}{res}         4
+{txt}     Between = {res}0.7017{col 63}{txt}avg{col 67}={col 69}{res}      22.6
+{txt}     Overall = {res}0.7097{col 63}{txt}max{col 67}={col 69}{res}       120
+
+{txt}{col 49}F({res}6{txt}, {res}4930{txt}){col 67}={col 70}{res}  1282.39
+{txt}corr(u_i, Xb) = {res}0.3391{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 20}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}pct_sold_below_list{col 21}{c |} Coefficient{col 33}  Std. err.{col 45}      t{col 53}   P>|t|{col 61}     [95% con{col 74}f. interval]
+{hline 20}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mean_days_pending {c |}{col 21}{res}{space 2} .0048664{col 33}{space 2} .0000679{col 44}{space 1}   71.63{col 53}{space 3}0.000{col 61}{space 4} .0047332{col 74}{space 3} .0049996
+{txt}{space 15}zhvi {c |}{col 21}{res}{space 2} 7.24e-07{col 33}{space 2} 6.98e-08{col 44}{space 1}   10.38{col 53}{space 3}0.000{col 61}{space 4} 5.87e-07{col 74}{space 3} 8.61e-07
+{txt}{space 2}median_list_price {c |}{col 21}{res}{space 2} 3.45e-07{col 33}{space 2} 3.00e-08{col 44}{space 1}   11.50{col 53}{space 3}0.000{col 61}{space 4} 2.87e-07{col 74}{space 3} 4.04e-07
+{txt}{space 2}median_sale_price {c |}{col 21}{res}{space 2}-1.13e-06{col 33}{space 2} 8.59e-08{col 44}{space 1}  -13.21{col 53}{space 3}0.000{col 61}{space 4}-1.30e-06{col 74}{space 3}-9.66e-07
+{txt}{space 6}invt_for_sale {c |}{col 21}{res}{space 2} 1.37e-06{col 33}{space 2} 2.14e-07{col 44}{space 1}    6.39{col 53}{space 3}0.000{col 61}{space 4} 9.49e-07{col 74}{space 3} 1.79e-06
+{txt}sales_count_nowcast {c |}{col 21}{res}{space 2}-6.85e-06{col 33}{space 2} 8.25e-07{col 44}{space 1}   -8.30{col 53}{space 3}0.000{col 61}{space 4}-8.47e-06{col 74}{space 3}-5.24e-06
+{txt}{space 14}_cons {c |}{col 21}{res}{space 2}  .265565{col 33}{space 2} .0039181{col 44}{space 1}   67.78{col 53}{space 3}0.000{col 61}{space 4} .2578837{col 74}{space 3} .2732463
+{txt}{hline 20}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+            sigma_u {c |} {res} .07416151
+            {txt}sigma_e {c |} {res} .05370062
+                {txt}rho {c |} {res} .65602762{txt}   (fraction of variance due to u_i)
+{hline 20}{c BT}{hline 64}
+F test that all u_i=0: F({res}227{txt}, {res}4930{txt}) = {res}29.40{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. eststo fixed_effects
+{txt}
+{com}. 
+. // interactionTerms
+. gen days_pending_x_zhvi = zhvi * mean_days_pending
+{txt}(74 missing values generated)
+
+{com}. xtreg pct_sold_below_list mean_days_pending zhvi median_list_price median_sale_price invt_for_sale sales_count_nowcast days_pending_x_zhvi, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}     5,164
+{txt}Group variable: {res}year_state{txt}{col 49}Number of groups{col 67}={col 69}{res}       228
+
+{txt}R-squared:{col 49}Obs per group:
+     Within  = {res}0.6503{col 63}{txt}min{col 67}={col 69}{res}         4
+{txt}     Between = {res}0.6806{col 63}{txt}avg{col 67}={col 69}{res}      22.6
+{txt}     Overall = {res}0.7140{col 63}{txt}max{col 67}={col 69}{res}       120
+
+{txt}{col 49}F({res}7{txt}, {res}4929{txt}){col 67}={col 70}{res}  1309.42
+{txt}corr(u_i, Xb) = {res}0.3559{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 20}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}pct_sold_below_list{col 21}{c |} Coefficient{col 33}  Std. err.{col 45}      t{col 53}   P>|t|{col 61}     [95% con{col 74}f. interval]
+{hline 20}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mean_days_pending {c |}{col 21}{res}{space 2} .0025025{col 33}{space 2} .0001177{col 44}{space 1}   21.27{col 53}{space 3}0.000{col 61}{space 4} .0022718{col 74}{space 3} .0027332
+{txt}{space 15}zhvi {c |}{col 21}{res}{space 2}-2.91e-08{col 33}{space 2} 7.31e-08{col 44}{space 1}   -0.40{col 53}{space 3}0.690{col 61}{space 4}-1.73e-07{col 74}{space 3} 1.14e-07
+{txt}{space 2}median_list_price {c |}{col 21}{res}{space 2} 1.66e-07{col 33}{space 2} 2.94e-08{col 44}{space 1}    5.64{col 53}{space 3}0.000{col 61}{space 4} 1.08e-07{col 74}{space 3} 2.23e-07
+{txt}{space 2}median_sale_price {c |}{col 21}{res}{space 2}-4.49e-07{col 33}{space 2} 8.62e-08{col 44}{space 1}   -5.21{col 53}{space 3}0.000{col 61}{space 4}-6.18e-07{col 74}{space 3}-2.80e-07
+{txt}{space 6}invt_for_sale {c |}{col 21}{res}{space 2}-2.48e-08{col 33}{space 2} 2.11e-07{col 44}{space 1}   -0.12{col 53}{space 3}0.906{col 61}{space 4}-4.39e-07{col 74}{space 3} 3.89e-07
+{txt}sales_count_nowcast {c |}{col 21}{res}{space 2}-4.12e-06{col 33}{space 2} 7.90e-07{col 44}{space 1}   -5.21{col 53}{space 3}0.000{col 61}{space 4}-5.66e-06{col 74}{space 3}-2.57e-06
+{txt}days_pending_x_zhvi {c |}{col 21}{res}{space 2} 8.87e-09{col 33}{space 2} 3.70e-10{col 44}{space 1}   23.99{col 53}{space 3}0.000{col 61}{space 4} 8.14e-09{col 74}{space 3} 9.59e-09
+{txt}{space 14}_cons {c |}{col 21}{res}{space 2} .3484318{col 33}{space 2} .0050681{col 44}{space 1}   68.75{col 53}{space 3}0.000{col 61}{space 4}  .338496{col 74}{space 3} .3583676
+{txt}{hline 20}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+            sigma_u {c |} {res}  .0767613
+            {txt}sigma_e {c |} {res} .05082196
+                {txt}rho {c |} {res} .69524246{txt}   (fraction of variance due to u_i)
+{hline 20}{c BT}{hline 64}
+F test that all u_i=0: F({res}227{txt}, {res}4929{txt}) = {res}33.28{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. eststo interactionTerm
+{txt}
+{com}. 
+. // colinearity 
+. // colinear variables are zhvi and median_sale_price
+. xtreg pct_sold_below_list mean_days_pending median_list_price median_sale_price invt_for_sale sales_count_nowcast, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}     5,166
+{txt}Group variable: {res}year_state{txt}{col 49}Number of groups{col 67}={col 69}{res}       228
+
+{txt}R-squared:{col 49}Obs per group:
+     Within  = {res}0.6005{col 63}{txt}min{col 67}={col 69}{res}         4
+{txt}     Between = {res}0.7488{col 63}{txt}avg{col 67}={col 69}{res}      22.7
+{txt}     Overall = {res}0.7206{col 63}{txt}max{col 67}={col 69}{res}       120
+
+{txt}{col 49}F({res}5{txt}, {res}4933{txt}){col 67}={col 70}{res}  1483.20
+{txt}corr(u_i, Xb) = {res}0.3804{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 20}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}pct_sold_below_list{col 21}{c |} Coefficient{col 33}  Std. err.{col 45}      t{col 53}   P>|t|{col 61}     [95% con{col 74}f. interval]
+{hline 20}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mean_days_pending {c |}{col 21}{res}{space 2} .0048845{col 33}{space 2} .0000687{col 44}{space 1}   71.07{col 53}{space 3}0.000{col 61}{space 4} .0047497{col 74}{space 3} .0050192
+{txt}{space 2}median_list_price {c |}{col 21}{res}{space 2} 3.05e-07{col 33}{space 2} 3.01e-08{col 44}{space 1}   10.11{col 53}{space 3}0.000{col 61}{space 4} 2.46e-07{col 74}{space 3} 3.64e-07
+{txt}{space 2}median_sale_price {c |}{col 21}{res}{space 2}-3.00e-07{col 33}{space 2} 3.15e-08{col 44}{space 1}   -9.52{col 53}{space 3}0.000{col 61}{space 4}-3.62e-07{col 74}{space 3}-2.38e-07
+{txt}{space 6}invt_for_sale {c |}{col 21}{res}{space 2} 1.75e-06{col 33}{space 2} 2.14e-07{col 44}{space 1}    8.21{col 53}{space 3}0.000{col 61}{space 4} 1.34e-06{col 74}{space 3} 2.17e-06
+{txt}sales_count_nowcast {c |}{col 21}{res}{space 2}-8.45e-06{col 33}{space 2} 8.21e-07{col 44}{space 1}  -10.29{col 53}{space 3}0.000{col 61}{space 4}-.0000101{col 74}{space 3}-6.84e-06
+{txt}{space 14}_cons {c |}{col 21}{res}{space 2}  .253988{col 33}{space 2} .0038158{col 44}{space 1}   66.56{col 53}{space 3}0.000{col 61}{space 4} .2465073{col 74}{space 3} .2614688
+{txt}{hline 20}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+            sigma_u {c |} {res} .07042397
+            {txt}sigma_e {c |} {res} .05434163
+                {txt}rho {c |} {res}  .6267937{txt}   (fraction of variance due to u_i)
+{hline 20}{c BT}{hline 64}
+F test that all u_i=0: F({res}227{txt}, {res}4933{txt}) = {res}28.30{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. eststo colin_zhvi
+{txt}
+{com}. 
+. xtreg pct_sold_below_list mean_days_pending zhvi median_list_price invt_for_sale sales_count_nowcast, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}     5,164
+{txt}Group variable: {res}year_state{txt}{col 49}Number of groups{col 67}={col 69}{res}       228
+
+{txt}R-squared:{col 49}Obs per group:
+     Within  = {res}0.5957{col 63}{txt}min{col 67}={col 69}{res}         4
+{txt}     Between = {res}0.7471{col 63}{txt}avg{col 67}={col 69}{res}      22.6
+{txt}     Overall = {res}0.7136{col 63}{txt}max{col 67}={col 69}{res}       120
+
+{txt}{col 49}F({res}5{txt}, {res}4931{txt}){col 67}={col 70}{res}  1452.88
+{txt}corr(u_i, Xb) = {res}0.3861{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 20}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}pct_sold_below_list{col 21}{c |} Coefficient{col 33}  Std. err.{col 45}      t{col 53}   P>|t|{col 61}     [95% con{col 74}f. interval]
+{hline 20}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mean_days_pending {c |}{col 21}{res}{space 2} .0048913{col 33}{space 2} .0000691{col 44}{space 1}   70.79{col 53}{space 3}0.000{col 61}{space 4} .0047558{col 74}{space 3} .0050268
+{txt}{space 15}zhvi {c |}{col 21}{res}{space 2}-1.35e-07{col 33}{space 2} 2.58e-08{col 44}{space 1}   -5.23{col 53}{space 3}0.000{col 61}{space 4}-1.85e-07{col 74}{space 3}-8.43e-08
+{txt}{space 2}median_list_price {c |}{col 21}{res}{space 2} 1.60e-07{col 33}{space 2} 2.70e-08{col 44}{space 1}    5.93{col 53}{space 3}0.000{col 61}{space 4} 1.07e-07{col 74}{space 3} 2.13e-07
+{txt}{space 6}invt_for_sale {c |}{col 21}{res}{space 2} 2.00e-06{col 33}{space 2} 2.13e-07{col 44}{space 1}    9.41{col 53}{space 3}0.000{col 61}{space 4} 1.58e-06{col 74}{space 3} 2.42e-06
+{txt}sales_count_nowcast {c |}{col 21}{res}{space 2}-8.92e-06{col 33}{space 2} 8.25e-07{col 44}{space 1}  -10.82{col 53}{space 3}0.000{col 61}{space 4}-.0000105{col 74}{space 3}-7.30e-06
+{txt}{space 14}_cons {c |}{col 21}{res}{space 2} .2530604{col 33}{space 2} .0038683{col 44}{space 1}   65.42{col 53}{space 3}0.000{col 61}{space 4} .2454769{col 74}{space 3}  .260644
+{txt}{hline 20}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+            sigma_u {c |} {res} .07121817
+            {txt}sigma_e {c |} {res} .05463681
+                {txt}rho {c |} {res} .62950179{txt}   (fraction of variance due to u_i)
+{hline 20}{c BT}{hline 64}
+F test that all u_i=0: F({res}227{txt}, {res}4931{txt}) = {res}28.96{col 62}{txt}Prob > F = {res}0.0000
+{txt}
+{com}. eststo colin_sale
+{txt}
+{com}. 
+. // Log Transformations
+. gen log_est_num_sold_below_list = log(est_num_sold_below_list) 
+{txt}(125 missing values generated)
+
+{com}. reg log_est_num_sold_below_list mean_days_pending zhvi median_list_price median_sale_price invt_for_sale sales_count_nowcast, r
+
+{txt}Linear regression                               Number of obs     = {res}     5,164
+                                                {txt}F(6, 5157)        =  {res}   556.81
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.7248
+                                                {txt}Root MSE          =    {res} .49804
+
+{txt}{hline 20}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 21}{c |}{col 33}    Robust
+{col 1}log_est_num_sold_~t{col 21}{c |} Coefficient{col 33}  std. err.{col 45}      t{col 53}   P>|t|{col 61}     [95% con{col 74}f. interval]
+{hline 20}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}mean_days_pending {c |}{col 21}{res}{space 2} .0112718{col 33}{space 2} .0005756{col 44}{space 1}   19.58{col 53}{space 3}0.000{col 61}{space 4} .0101435{col 74}{space 3} .0124002
+{txt}{space 15}zhvi {c |}{col 21}{res}{space 2}-1.55e-06{col 33}{space 2} 3.71e-07{col 44}{space 1}   -4.18{col 53}{space 3}0.000{col 61}{space 4}-2.28e-06{col 74}{space 3}-8.25e-07
+{txt}{space 2}median_list_price {c |}{col 21}{res}{space 2} 1.65e-06{col 33}{space 2} 2.38e-07{col 44}{space 1}    6.92{col 53}{space 3}0.000{col 61}{space 4} 1.18e-06{col 74}{space 3} 2.11e-06
+{txt}{space 2}median_sale_price {c |}{col 21}{res}{space 2}-2.36e-07{col 33}{space 2} 4.89e-07{col 44}{space 1}   -0.48{col 53}{space 3}0.630{col 61}{space 4}-1.19e-06{col 74}{space 3} 7.23e-07
+{txt}{space 6}invt_for_sale {c |}{col 21}{res}{space 2}-6.42e-06{col 33}{space 2} 2.53e-06{col 44}{space 1}   -2.53{col 53}{space 3}0.011{col 61}{space 4}-.0000114{col 74}{space 3}-1.45e-06
+{txt}sales_count_nowcast {c |}{col 21}{res}{space 2} .0003015{col 33}{space 2} 9.54e-06{col 44}{space 1}   31.62{col 53}{space 3}0.000{col 61}{space 4} .0002828{col 74}{space 3} .0003202
+{txt}{space 14}_cons {c |}{col 21}{res}{space 2} 5.416229{col 33}{space 2} .0315392{col 44}{space 1}  171.73{col 53}{space 3}0.000{col 61}{space 4} 5.354398{col 74}{space 3} 5.478059
+{txt}{hline 20}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. eststo log_linear
+{txt}
+{com}. 
+. gen log_days_pending = log(mean_days_pending)
+{txt}(72 missing values generated)
+
+{com}. gen log_zhvi = log(zhvi)
+{txt}(2 missing values generated)
+
+{com}. gen log_median_list = log(median_list_price)
+{txt}(5 missing values generated)
+
+{com}. gen log_median_sale = log(median_sale_price)
+{txt}
+{com}. gen log_invt = log(invt_for_sale)
+{txt}
+{com}. gen log_sales_count = log(sales_count_nowcast)
+{txt}(2 missing values generated)
+
+{com}. 
+. reg log_est_num_sold_below_list log_days_pending log_zhvi log_median_list log_median_sale log_invt log_sales_count, r
+
+{txt}Linear regression                               Number of obs     = {res}     5,164
+                                                {txt}F(6, 5157)        =  {res} 22081.90
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.9605
+                                                {txt}Root MSE          =    {res} .18877
+
+{txt}{hline 17}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 18}{c |}{col 30}    Robust
+{col 1}log_est_num_so~t{col 18}{c |} Coefficient{col 30}  std. err.{col 42}      t{col 50}   P>|t|{col 58}     [95% con{col 71}f. interval]
+{hline 17}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+log_days_pending {c |}{col 18}{res}{space 2} .5321707{col 30}{space 2} .0087643{col 41}{space 1}   60.72{col 50}{space 3}0.000{col 58}{space 4}  .514989{col 71}{space 3} .5493524
+{txt}{space 8}log_zhvi {c |}{col 18}{res}{space 2} .1072407{col 30}{space 2} .0377385{col 41}{space 1}    2.84{col 50}{space 3}0.005{col 58}{space 4} .0332572{col 71}{space 3} .1812242
+{txt}{space 1}log_median_list {c |}{col 18}{res}{space 2} .4394778{col 30}{space 2} .0433212{col 41}{space 1}   10.14{col 50}{space 3}0.000{col 58}{space 4} .3545499{col 71}{space 3} .5244057
+{txt}{space 1}log_median_sale {c |}{col 18}{res}{space 2}-.6607132{col 30}{space 2} .0571139{col 41}{space 1}  -11.57{col 50}{space 3}0.000{col 58}{space 4}-.7726807{col 71}{space 3}-.5487457
+{txt}{space 8}log_invt {c |}{col 18}{res}{space 2} .1167836{col 30}{space 2} .0095289{col 41}{space 1}   12.26{col 50}{space 3}0.000{col 58}{space 4} .0981029{col 71}{space 3} .1354643
+{txt}{space 1}log_sales_count {c |}{col 18}{res}{space 2} .9057593{col 30}{space 2} .0094886{col 41}{space 1}   95.46{col 50}{space 3}0.000{col 58}{space 4} .8871575{col 71}{space 3}  .924361
+{txt}{space 11}_cons {c |}{col 18}{res}{space 2}-1.664506{col 30}{space 2} .1095059{col 41}{space 1}  -15.20{col 50}{space 3}0.000{col 58}{space 4}-1.879184{col 71}{space 3}-1.449828
+{txt}{hline 17}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. eststo log_log
+{txt}
+{com}. 
+. esttab simple_reg multi_reg fixed_effects interactionTerm colin_zhvi colin_sale log_linear log_log using Zillow2.tex, se r2  replace
+{res}{txt}(output written to {browse  `"Zillow2.tex"'})
+
+{com}. 
+. clear
+{txt}
+{com}. import delimited "mergedZillowData.csv"
+{res}{txt}(encoding automatically selected: ISO-8859-1)
+{text}(26 vars, 60 obs)
+
+{com}. 
+. gen log_days_pending = log(mean_days_pending)
+{txt}
+{com}. gen log_zhvi = log(zhvi)
+{txt}
+{com}. gen log_median_list = log(median_list_price)
+{txt}
+{com}. gen log_median_sale = log(median_sale_price)
+{txt}
+{com}. gen log_invt = log(invt_for_sale)
+{txt}
+{com}. gen log_sales_count = log(sales_count_nowcast)
+{txt}
+{com}. 
+. reg pct_sold_below_list mean_days_pending sunny_hours, r
+
+{txt}Linear regression                               Number of obs     = {res}        60
+                                                {txt}F(2, 57)          =  {res}    24.60
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.7083
+                                                {txt}Root MSE          =    {res} .04802
+
+{txt}{hline 18}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 19}{c |}{col 31}    Robust
+{col 1}pct_sold_below_~t{col 19}{c |} Coefficient{col 31}  std. err.{col 43}      t{col 51}   P>|t|{col 59}     [95% con{col 72}f. interval]
+{hline 18}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+mean_days_pending {c |}{col 19}{res}{space 2} .0073121{col 31}{space 2}   .00105{col 42}{space 1}    6.96{col 51}{space 3}0.000{col 59}{space 4} .0052095{col 72}{space 3} .0094147
+{txt}{space 6}sunny_hours {c |}{col 19}{res}{space 2}-.0060262{col 31}{space 2} .0109978{col 42}{space 1}   -0.55{col 51}{space 3}0.586{col 59}{space 4} -.028049{col 72}{space 3} .0159966
+{txt}{space 12}_cons {c |}{col 19}{res}{space 2} .2394435{col 31}{space 2} .0703855{col 42}{space 1}    3.40{col 51}{space 3}0.001{col 59}{space 4}  .098499{col 72}{space 3}  .380388
+{txt}{hline 18}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. eststo sunny1
+{txt}
+{com}. 
+. reg pct_sold_below_list log_days_pending sunny_hours log_zhvi log_median_list log_median_sale log_invt log_sales_count, r 
+
+{txt}Linear regression                               Number of obs     = {res}        60
+                                                {txt}F(7, 52)          =  {res}   105.04
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.9240
+                                                {txt}Root MSE          =    {res} .02566
+
+{txt}{hline 17}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 18}{c |}{col 30}    Robust
+{col 1}pct_sold_below~t{col 18}{c |} Coefficient{col 30}  std. err.{col 42}      t{col 50}   P>|t|{col 58}     [95% con{col 71}f. interval]
+{hline 17}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+log_days_pending {c |}{col 18}{res}{space 2} .2540213{col 30}{space 2} .0131992{col 41}{space 1}   19.25{col 50}{space 3}0.000{col 58}{space 4} .2275351{col 71}{space 3} .2805075
+{txt}{space 5}sunny_hours {c |}{col 18}{res}{space 2}  .004467{col 30}{space 2} .0056158{col 41}{space 1}    0.80{col 50}{space 3}0.430{col 58}{space 4}-.0068019{col 71}{space 3} .0157359
+{txt}{space 8}log_zhvi {c |}{col 18}{res}{space 2}-.2482735{col 30}{space 2} .1981397{col 41}{space 1}   -1.25{col 50}{space 3}0.216{col 58}{space 4}  -.64587{col 71}{space 3}  .149323
+{txt}{space 1}log_median_list {c |}{col 18}{res}{space 2} .3588811{col 30}{space 2} .0797784{col 41}{space 1}    4.50{col 50}{space 3}0.000{col 58}{space 4}  .198794{col 71}{space 3} .5189681
+{txt}{space 1}log_median_sale {c |}{col 18}{res}{space 2}-.0542766{col 30}{space 2} .1618712{col 41}{space 1}   -0.34{col 50}{space 3}0.739{col 58}{space 4}-.3790949{col 71}{space 3} .2705417
+{txt}{space 8}log_invt {c |}{col 18}{res}{space 2}-.1731963{col 30}{space 2} .0249765{col 41}{space 1}   -6.93{col 50}{space 3}0.000{col 58}{space 4}-.2233154{col 71}{space 3}-.1230773
+{txt}{space 1}log_sales_count {c |}{col 18}{res}{space 2}  .130054{col 30}{space 2} .0237853{col 41}{space 1}    5.47{col 50}{space 3}0.000{col 58}{space 4} .0823254{col 71}{space 3} .1777827
+{txt}{space 11}_cons {c |}{col 18}{res}{space 2}-.6522135{col 30}{space 2} .4600871{col 41}{space 1}   -1.42{col 50}{space 3}0.162{col 58}{space 4}-1.575446{col 71}{space 3} .2710188
+{txt}{hline 17}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. eststo sunny2
+{txt}
+{com}. 
+. esttab sunny1 sunny2 using sunnyZillow.tex, se r2   replace
+{res}{txt}(output written to {browse  `"sunnyZillow.tex"'})
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "/Users/johnmccormick/githubFolder/econCapstone/Zillow2.do"
+{txt}
+{com}. cd "/Users/johnmccormick/githubFolder/econCapstone"
+{res}/Users/johnmccormick/githubFolder/econCapstone
+{txt}
+{com}. 
+. clear
+{txt}
+{com}. log using zillow2.txt
+{err}log file already open
+{txt}{search r(604), local:r(604);}
+
+end of do-file
+
+{search r(604), local:r(604);}
+
+{com}. do "/var/folders/12/cj06bs3d3w32s5gsb5vnl_ww0000gn/T//SD40044.000000"
+{txt}
+{com}. cd "/Users/johnmccormick/githubFolder/econCapstone"
+{res}/Users/johnmccormick/githubFolder/econCapstone
+{txt}
+{com}. 
+. clear
+{txt}
+{com}. log using zillow2.log
+{err}log file already open
+{txt}{search r(604), local:r(604);}
+
+end of do-file
+
+{search r(604), local:r(604);}
+
+{com}. 

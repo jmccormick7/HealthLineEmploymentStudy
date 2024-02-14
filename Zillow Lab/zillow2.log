@@ -1,0 +1,354 @@
+----------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/johnmccormick/githubFolder/econCapstone/zillow2.log
+  log type:  text
+ opened on:   2 Feb 2024, 22:03:21
+
+. import delimited "cleanedZillowData.csv"
+(encoding automatically selected: ISO-8859-1)
+(25 vars, 5,301 obs)
+
+. 
+. // Simple regression
+. reg pct_sold_below_list mean_days_pending, r
+
+Linear regression                               Number of obs     =      5,172
+                                                F(1, 5170)        =    6102.17
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.7043
+                                                Root MSE          =     .08563
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+pct_sold_below_~t | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+------------------+----------------------------------------------------------------
+mean_days_pending |   .0065718   .0000841    78.12   0.000     .0064068    .0067367
+            _cons |   .1914648   .0032384    59.12   0.000     .1851162    .1978134
+-----------------------------------------------------------------------------------
+
+. eststo simple_reg 
+
+. 
+. // Multivariate regression
+. reg pct_sold_below_list mean_days_pending zhvi median_list_price median_sale_price invt_for_
+> sale sales_count_nowcast, r
+
+Linear regression                               Number of obs     =      5,164
+                                                F(6, 5157)        =    1563.39
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.7388
+                                                Root MSE          =     .08055
+
+-------------------------------------------------------------------------------------
+                    |               Robust
+pct_sold_below_list | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+--------------------+----------------------------------------------------------------
+  mean_days_pending |   .0056826    .000104    54.65   0.000     .0054787    .0058864
+               zhvi |   6.43e-08   5.74e-08     1.12   0.263    -4.82e-08    1.77e-07
+  median_list_price |   6.62e-07   4.55e-08    14.54   0.000     5.73e-07    7.51e-07
+  median_sale_price |  -8.46e-07   7.28e-08   -11.62   0.000    -9.89e-07   -7.04e-07
+      invt_for_sale |   2.07e-06   4.01e-07     5.17   0.000     1.29e-06    2.86e-06
+sales_count_nowcast |  -7.86e-06   1.24e-06    -6.34   0.000    -.0000103   -5.43e-06
+              _cons |   .2448595   .0050453    48.53   0.000     .2349685    .2547505
+-------------------------------------------------------------------------------------
+
+. eststo multi_reg
+
+. 
+. // Fixed Effects 
+. gen year_state = year*state
+
+. xtset year_state
+
+Panel variable: year_state (unbalanced)
+
+. xtreg pct_sold_below_list mean_days_pending zhvi median_list_price median_sale_price invt_fo
+> r_sale sales_count_nowcast, fe
+
+Fixed-effects (within) regression               Number of obs     =      5,164
+Group variable: year_state                      Number of groups  =        228
+
+R-squared:                                      Obs per group:
+     Within  = 0.6095                                         min =          4
+     Between = 0.7017                                         avg =       22.6
+     Overall = 0.7097                                         max =        120
+
+                                                F(6, 4930)        =    1282.39
+corr(u_i, Xb) = 0.3391                          Prob > F          =     0.0000
+
+-------------------------------------------------------------------------------------
+pct_sold_below_list | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+--------------------+----------------------------------------------------------------
+  mean_days_pending |   .0048664   .0000679    71.63   0.000     .0047332    .0049996
+               zhvi |   7.24e-07   6.98e-08    10.38   0.000     5.87e-07    8.61e-07
+  median_list_price |   3.45e-07   3.00e-08    11.50   0.000     2.87e-07    4.04e-07
+  median_sale_price |  -1.13e-06   8.59e-08   -13.21   0.000    -1.30e-06   -9.66e-07
+      invt_for_sale |   1.37e-06   2.14e-07     6.39   0.000     9.49e-07    1.79e-06
+sales_count_nowcast |  -6.85e-06   8.25e-07    -8.30   0.000    -8.47e-06   -5.24e-06
+              _cons |    .265565   .0039181    67.78   0.000     .2578837    .2732463
+--------------------+----------------------------------------------------------------
+            sigma_u |  .07416151
+            sigma_e |  .05370062
+                rho |  .65602762   (fraction of variance due to u_i)
+-------------------------------------------------------------------------------------
+F test that all u_i=0: F(227, 4930) = 29.40                  Prob > F = 0.0000
+
+. eststo fixed_effects
+
+. 
+. // interactionTerms
+. gen days_pending_x_zhvi = zhvi * mean_days_pending
+(74 missing values generated)
+
+. xtreg pct_sold_below_list mean_days_pending zhvi median_list_price median_sale_price invt_fo
+> r_sale sales_count_nowcast days_pending_x_zhvi, fe
+
+Fixed-effects (within) regression               Number of obs     =      5,164
+Group variable: year_state                      Number of groups  =        228
+
+R-squared:                                      Obs per group:
+     Within  = 0.6503                                         min =          4
+     Between = 0.6806                                         avg =       22.6
+     Overall = 0.7140                                         max =        120
+
+                                                F(7, 4929)        =    1309.42
+corr(u_i, Xb) = 0.3559                          Prob > F          =     0.0000
+
+-------------------------------------------------------------------------------------
+pct_sold_below_list | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+--------------------+----------------------------------------------------------------
+  mean_days_pending |   .0025025   .0001177    21.27   0.000     .0022718    .0027332
+               zhvi |  -2.91e-08   7.31e-08    -0.40   0.690    -1.73e-07    1.14e-07
+  median_list_price |   1.66e-07   2.94e-08     5.64   0.000     1.08e-07    2.23e-07
+  median_sale_price |  -4.49e-07   8.62e-08    -5.21   0.000    -6.18e-07   -2.80e-07
+      invt_for_sale |  -2.48e-08   2.11e-07    -0.12   0.906    -4.39e-07    3.89e-07
+sales_count_nowcast |  -4.12e-06   7.90e-07    -5.21   0.000    -5.66e-06   -2.57e-06
+days_pending_x_zhvi |   8.87e-09   3.70e-10    23.99   0.000     8.14e-09    9.59e-09
+              _cons |   .3484318   .0050681    68.75   0.000      .338496    .3583676
+--------------------+----------------------------------------------------------------
+            sigma_u |   .0767613
+            sigma_e |  .05082196
+                rho |  .69524246   (fraction of variance due to u_i)
+-------------------------------------------------------------------------------------
+F test that all u_i=0: F(227, 4929) = 33.28                  Prob > F = 0.0000
+
+. eststo interactionTerm
+
+. 
+. // colinearity 
+. // colinear variables are zhvi and median_sale_price
+. xtreg pct_sold_below_list mean_days_pending median_list_price median_sale_price invt_for_sal
+> e sales_count_nowcast, fe
+
+Fixed-effects (within) regression               Number of obs     =      5,166
+Group variable: year_state                      Number of groups  =        228
+
+R-squared:                                      Obs per group:
+     Within  = 0.6005                                         min =          4
+     Between = 0.7488                                         avg =       22.7
+     Overall = 0.7206                                         max =        120
+
+                                                F(5, 4933)        =    1483.20
+corr(u_i, Xb) = 0.3804                          Prob > F          =     0.0000
+
+-------------------------------------------------------------------------------------
+pct_sold_below_list | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+--------------------+----------------------------------------------------------------
+  mean_days_pending |   .0048845   .0000687    71.07   0.000     .0047497    .0050192
+  median_list_price |   3.05e-07   3.01e-08    10.11   0.000     2.46e-07    3.64e-07
+  median_sale_price |  -3.00e-07   3.15e-08    -9.52   0.000    -3.62e-07   -2.38e-07
+      invt_for_sale |   1.75e-06   2.14e-07     8.21   0.000     1.34e-06    2.17e-06
+sales_count_nowcast |  -8.45e-06   8.21e-07   -10.29   0.000    -.0000101   -6.84e-06
+              _cons |    .253988   .0038158    66.56   0.000     .2465073    .2614688
+--------------------+----------------------------------------------------------------
+            sigma_u |  .07042397
+            sigma_e |  .05434163
+                rho |   .6267937   (fraction of variance due to u_i)
+-------------------------------------------------------------------------------------
+F test that all u_i=0: F(227, 4933) = 28.30                  Prob > F = 0.0000
+
+. eststo colin_zhvi
+
+. 
+. xtreg pct_sold_below_list mean_days_pending zhvi median_list_price invt_for_sale sales_count
+> _nowcast, fe
+
+Fixed-effects (within) regression               Number of obs     =      5,164
+Group variable: year_state                      Number of groups  =        228
+
+R-squared:                                      Obs per group:
+     Within  = 0.5957                                         min =          4
+     Between = 0.7471                                         avg =       22.6
+     Overall = 0.7136                                         max =        120
+
+                                                F(5, 4931)        =    1452.88
+corr(u_i, Xb) = 0.3861                          Prob > F          =     0.0000
+
+-------------------------------------------------------------------------------------
+pct_sold_below_list | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+--------------------+----------------------------------------------------------------
+  mean_days_pending |   .0048913   .0000691    70.79   0.000     .0047558    .0050268
+               zhvi |  -1.35e-07   2.58e-08    -5.23   0.000    -1.85e-07   -8.43e-08
+  median_list_price |   1.60e-07   2.70e-08     5.93   0.000     1.07e-07    2.13e-07
+      invt_for_sale |   2.00e-06   2.13e-07     9.41   0.000     1.58e-06    2.42e-06
+sales_count_nowcast |  -8.92e-06   8.25e-07   -10.82   0.000    -.0000105   -7.30e-06
+              _cons |   .2530604   .0038683    65.42   0.000     .2454769     .260644
+--------------------+----------------------------------------------------------------
+            sigma_u |  .07121817
+            sigma_e |  .05463681
+                rho |  .62950179   (fraction of variance due to u_i)
+-------------------------------------------------------------------------------------
+F test that all u_i=0: F(227, 4931) = 28.96                  Prob > F = 0.0000
+
+. eststo colin_sale
+
+. 
+. // Log Transformations
+. gen log_est_num_sold_below_list = log(est_num_sold_below_list) 
+(125 missing values generated)
+
+. reg log_est_num_sold_below_list mean_days_pending zhvi median_list_price median_sale_price i
+> nvt_for_sale sales_count_nowcast, r
+
+Linear regression                               Number of obs     =      5,164
+                                                F(6, 5157)        =     556.81
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.7248
+                                                Root MSE          =     .49804
+
+-------------------------------------------------------------------------------------
+                    |               Robust
+log_est_num_sold_~t | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+--------------------+----------------------------------------------------------------
+  mean_days_pending |   .0112718   .0005756    19.58   0.000     .0101435    .0124002
+               zhvi |  -1.55e-06   3.71e-07    -4.18   0.000    -2.28e-06   -8.25e-07
+  median_list_price |   1.65e-06   2.38e-07     6.92   0.000     1.18e-06    2.11e-06
+  median_sale_price |  -2.36e-07   4.89e-07    -0.48   0.630    -1.19e-06    7.23e-07
+      invt_for_sale |  -6.42e-06   2.53e-06    -2.53   0.011    -.0000114   -1.45e-06
+sales_count_nowcast |   .0003015   9.54e-06    31.62   0.000     .0002828    .0003202
+              _cons |   5.416229   .0315392   171.73   0.000     5.354398    5.478059
+-------------------------------------------------------------------------------------
+
+. eststo log_linear
+
+. 
+. gen log_days_pending = log(mean_days_pending)
+(72 missing values generated)
+
+. gen log_zhvi = log(zhvi)
+(2 missing values generated)
+
+. gen log_median_list = log(median_list_price)
+(5 missing values generated)
+
+. gen log_median_sale = log(median_sale_price)
+
+. gen log_invt = log(invt_for_sale)
+
+. gen log_sales_count = log(sales_count_nowcast)
+(2 missing values generated)
+
+. 
+. reg log_est_num_sold_below_list log_days_pending log_zhvi log_median_list log_median_sale lo
+> g_invt log_sales_count, r
+
+Linear regression                               Number of obs     =      5,164
+                                                F(6, 5157)        =   22081.90
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.9605
+                                                Root MSE          =     .18877
+
+----------------------------------------------------------------------------------
+                 |               Robust
+log_est_num_so~t | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+log_days_pending |   .5321707   .0087643    60.72   0.000      .514989    .5493524
+        log_zhvi |   .1072407   .0377385     2.84   0.005     .0332572    .1812242
+ log_median_list |   .4394778   .0433212    10.14   0.000     .3545499    .5244057
+ log_median_sale |  -.6607132   .0571139   -11.57   0.000    -.7726807   -.5487457
+        log_invt |   .1167836   .0095289    12.26   0.000     .0981029    .1354643
+ log_sales_count |   .9057593   .0094886    95.46   0.000     .8871575     .924361
+           _cons |  -1.664506   .1095059   -15.20   0.000    -1.879184   -1.449828
+----------------------------------------------------------------------------------
+
+. eststo log_log
+
+. 
+. esttab simple_reg multi_reg fixed_effects interactionTerm colin_zhvi colin_sale log_linear l
+> og_log using Zillow2.tex, se r2  replace
+(output written to Zillow2.tex)
+
+. 
+. clear
+
+. import delimited "mergedZillowData.csv"
+(encoding automatically selected: ISO-8859-1)
+(26 vars, 60 obs)
+
+. 
+. gen log_days_pending = log(mean_days_pending)
+
+. gen log_zhvi = log(zhvi)
+
+. gen log_median_list = log(median_list_price)
+
+. gen log_median_sale = log(median_sale_price)
+
+. gen log_invt = log(invt_for_sale)
+
+. gen log_sales_count = log(sales_count_nowcast)
+
+. 
+. reg pct_sold_below_list mean_days_pending sunny_hours, r
+
+Linear regression                               Number of obs     =         60
+                                                F(2, 57)          =      24.60
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.7083
+                                                Root MSE          =     .04802
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+pct_sold_below_~t | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+------------------+----------------------------------------------------------------
+mean_days_pending |   .0073121     .00105     6.96   0.000     .0052095    .0094147
+      sunny_hours |  -.0060262   .0109978    -0.55   0.586     -.028049    .0159966
+            _cons |   .2394435   .0703855     3.40   0.001      .098499     .380388
+-----------------------------------------------------------------------------------
+
+. eststo sunny1
+
+. 
+. reg pct_sold_below_list log_days_pending sunny_hours log_zhvi log_median_list log_median_sal
+> e log_invt log_sales_count, r 
+
+Linear regression                               Number of obs     =         60
+                                                F(7, 52)          =     105.04
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.9240
+                                                Root MSE          =     .02566
+
+----------------------------------------------------------------------------------
+                 |               Robust
+pct_sold_below~t | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+log_days_pending |   .2540213   .0131992    19.25   0.000     .2275351    .2805075
+     sunny_hours |    .004467   .0056158     0.80   0.430    -.0068019    .0157359
+        log_zhvi |  -.2482735   .1981397    -1.25   0.216      -.64587     .149323
+ log_median_list |   .3588811   .0797784     4.50   0.000      .198794    .5189681
+ log_median_sale |  -.0542766   .1618712    -0.34   0.739    -.3790949    .2705417
+        log_invt |  -.1731963   .0249765    -6.93   0.000    -.2233154   -.1230773
+ log_sales_count |    .130054   .0237853     5.47   0.000     .0823254    .1777827
+           _cons |  -.6522135   .4600871    -1.42   0.162    -1.575446    .2710188
+----------------------------------------------------------------------------------
+
+. eststo sunny2
+
+. 
+. esttab sunny1 sunny2 using sunnyZillow.tex, se r2   replace
+(output written to sunnyZillow.tex)
+
+. 
+end of do-file
+
+. exit, clear

@@ -1,0 +1,35 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{2}{c}}
+\hline\hline
+            &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}\\
+            &\multicolumn{1}{c}{pct\_sold\_below\_list}&\multicolumn{1}{c}{pct\_sold\_below\_list}\\
+\hline
+mean\_days\_pending&       1.007\sym{***}&       1.009\sym{***}\\
+            &   (0.00106)         &  (0.000708)         \\
+[1em]
+sunny\_hours &       0.994         &       1.006         \\
+            &    (0.0109)         &   (0.00831)         \\
+[1em]
+zhvi        &                     &       1.000         \\
+            &                     &(0.00000128)         \\
+[1em]
+median\_list\_price&                     &       1.000         \\
+            &                     &(0.000000596)         \\
+[1em]
+median\_sale\_price&                     &       1.000         \\
+            &                     &(0.00000108)         \\
+[1em]
+invt\_for\_sale&                     &       1.000\sym{***}\\
+            &                     & (0.0000102)         \\
+[1em]
+sales\_count\_nowcast&                     &       1.000\sym{***}\\
+            &                     & (0.0000225)         \\
+\hline
+\(N\)       &          60         &          60         \\
+\(R^{2}\)   &       0.708         &       0.849         \\
+\hline\hline
+\multicolumn{3}{l}{\footnotesize Exponentiated coefficients; Standard errors in parentheses}\\
+\multicolumn{3}{l}{\footnotesize \sym{*} \(p<0.05\), \sym{**} \(p<0.01\), \sym{***} \(p<0.001\)}\\
+\end{tabular}
+}
