@@ -1,6 +1,7 @@
 import pandas as pd
 
 # Read the data
+data2004 = pd.read_csv('LEHD_data/oh_rac_S000_JT00_2004.csv')
 data2005 = pd.read_csv('LEHD_data/oh_rac_S000_JT00_2005.csv')
 data2006 = pd.read_csv('LEHD_data/oh_rac_S000_JT00_2006.csv')
 data2007 = pd.read_csv('LEHD_data/oh_rac_S000_JT00_2007.csv')
@@ -12,6 +13,7 @@ data2012 = pd.read_csv('LEHD_data/oh_rac_S000_JT00_2012.csv')
 data2013 = pd.read_csv('LEHD_data/oh_rac_S000_JT00_2013.csv')
 
 ## Add year column to each data set
+data2004['year'] = 2004
 data2005['year'] = 2005
 data2006['year'] = 2006
 data2007['year'] = 2007
@@ -24,7 +26,7 @@ data2013['year'] = 2013
 
 
 # Merge the data to create one sheet of 2005 - 2013 data 
-data = pd.concat([data2005, data2006, data2007, data2008, data2009, data2010, data2011, data2012, data2013])
+data = pd.concat([data2004, data2005, data2006, data2007, data2008, data2009, data2010, data2011, data2012, data2013])
 
 # Save the data to a new csv file fully merged
-data.to_csv('LEHD_data/oh_rac_S000_JT00_2005_2013.csv', index=False)
+data.to_csv('LEHD_data/oh_rac_S000_JT00_2004_2013.csv', index=False)
