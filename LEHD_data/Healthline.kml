@@ -1,4 +1,10 @@
 <kml xmlns="http://www.opengis.net/kml/2.2"><Document>
+<Style id="lineStyle">
+      <LineStyle>
+        <color>ff0000ff</color> <!-- Blue line, in AABBGGRR format -->
+        <width>4</width> <!-- Line width -->
+      </LineStyle>
+</Style>
 <Placemark>
 <name>Cleveland RTA HealthLine BRT</name><ExtendedData></ExtendedData>
   <LineString><coordinates>-81.69472,41.4995
