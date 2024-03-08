@@ -1,0 +1,134 @@
+    Table 1:     Sex by Age
+        RKYE001:     Total
+        RKYE002:     Male
+        RKYE003:     Male: Under 5 years
+        RKYE004:     Male: 5 to 9 years
+        RKYE005:     Male: 10 to 14 years
+        RKYE006:     Male: 15 to 17 years
+        RKYE007:     Male: 18 and 19 years
+        RKYE008:     Male: 20 years
+        RKYE009:     Male: 21 years
+        RKYE010:     Male: 22 to 24 years
+        RKYE011:     Male: 25 to 29 years
+        RKYE012:     Male: 30 to 34 years
+        RKYE013:     Male: 35 to 39 years
+        RKYE014:     Male: 40 to 44 years
+        RKYE015:     Male: 45 to 49 years
+        RKYE016:     Male: 50 to 54 years
+        RKYE017:     Male: 55 to 59 years
+        RKYE018:     Male: 60 and 61 years
+        RKYE019:     Male: 62 to 64 years
+        RKYE020:     Male: 65 and 66 years
+        RKYE021:     Male: 67 to 69 years
+        RKYE022:     Male: 70 to 74 years
+        RKYE023:     Male: 75 to 79 years
+        RKYE024:     Male: 80 to 84 years
+        RKYE025:     Male: 85 years and over
+        RKYE026:     Female
+        RKYE027:     Female: Under 5 years
+        RKYE028:     Female: 5 to 9 years
+        RKYE029:     Female: 10 to 14 years
+        RKYE030:     Female: 15 to 17 years
+        RKYE031:     Female: 18 and 19 years
+        RKYE032:     Female: 20 years
+        RKYE033:     Female: 21 years
+        RKYE034:     Female: 22 to 24 years
+        RKYE035:     Female: 25 to 29 years
+        RKYE036:     Female: 30 to 34 years
+        RKYE037:     Female: 35 to 39 years
+        RKYE038:     Female: 40 to 44 years
+        RKYE039:     Female: 45 to 49 years
+        RKYE040:     Female: 50 to 54 years
+        RKYE041:     Female: 55 to 59 years
+        RKYE042:     Female: 60 and 61 years
+        RKYE043:     Female: 62 to 64 years
+        RKYE044:     Female: 65 and 66 years
+        RKYE045:     Female: 67 to 69 years
+        RKYE046:     Female: 70 to 74 years
+        RKYE047:     Female: 75 to 79 years
+        RKYE048:     Female: 80 to 84 years
+        RKYE049:     Female: 85 years and over
+    Table 2:     Median Age by Sex
+        RKZE001:     Median age: Total
+        RKZE002:     Median age: Male
+        RKZE003:     Median age: Female
+    Table 3:     Total Population
+        RK9E001:     Total
+ 
+    Table 4:     Race
+        RLAE001:     Total
+        RLAE002:     White alone
+        RLAE003:     Black or African American alone
+        RLAE004:     American Indian and Alaska Native alone
+        RLAE005:     Asian alone
+        RLAE006:     Native Hawaiian and Other Pacific Islander alone
+        RLAE007:     Some other race alone
+        RLAE008:     Two or more races
+        RLAE009:     Two or more races: Two races including Some other race
+        RLAE010:     Two or more races: Two races excluding Some other race, and three or more races
+    Table 5:     Hispanic or Latino Origin
+        RLJE001:     Total
+        RLJE002:     Not Hispanic or Latino
+        RLJE003:     Hispanic or Latino
+    Table 6:     Sex by Marital Status for the Population 15 Years and Over
+        RMWE001:     Total
+        RMWE002:     Male
+        RMWE003:     Male: Never married
+        RMWE004:     Male: Now married
+        RMWE005:     Male: Now married: Married, spouse present
+        RMWE006:     Male: Now married: Married, spouse absent
+        RMWE007:     Male: Now married: Married, spouse absent: Separated
+        RMWE008:     Male: Now married: Married, spouse absent: Other
+        RMWE009:     Male: Widowed
+        RMWE010:     Male: Divorced
+        RMWE011:     Female
+        RMWE012:     Female: Never married
+        RMWE013:     Female: Now married
+        RMWE014:     Female: Now married: Married, spouse present
+        RMWE015:     Female: Now married: Married, spouse absent
+        RMWE016:     Female: Now married: Married, spouse absent: Separated
+        RMWE017:     Female: Now married: Married, spouse absent: Other
+        RMWE018:     Female: Widowed
+        RMWE019:     Female: Divorced
+    Table 7:     Sex by Educational Attainment for the Population 25 Years and Over
+        RM8E001:     Total
+        RM8E002:     Male
+        RM8E003:     Male: No schooling completed
+        RM8E004:     Male: Nursery to 4th grade
+        RM8E005:     Male: 5th and 6th grade
+        RM8E006:     Male: 7th and 8th grade
+        RM8E007:     Male: 9th grade
+        RM8E008:     Male: 10th grade
+        RM8E009:     Male: 11th grade
+        RM8E010:     Male: 12th grade, no diploma
+        RM8E011:     Male: High school graduate, GED, or alternative
+        RM8E012:     Male: Some college, less than 1 year
+        RM8E013:     Male: Some college, 1 or more years, no degree
+        RM8E014:     Male: Associate's degree
+        RM8E015:     Male: Bachelor's degree
+        RM8E016:     Male: Master's degree
+        RM8E017:     Male: Professional school degree
+        RM8E018:     Male: Doctorate degree
+        RM8E019:     Female
+        RM8E020:     Female: No schooling completed
+        RM8E021:     Female: Nursery to 4th grade
+        RM8E022:     Female: 5th and 6th grade
+        RM8E023:     Female: 7th and 8th grade
+        RM8E024:     Female: 9th grade
+        RM8E025:     Female: 10th grade
+        RM8E026:     Female: 11th grade
+        RM8E027:     Female: 12th grade, no diploma
+        RM8E028:     Female: High school graduate, GED, or alternative
+        RM8E029:     Female: Some college, less than 1 year
+        RM8E030:     Female: Some college, 1 or more years, no degree
+        RM8E031:     Female: Associate's degree
+        RM8E032:     Female: Bachelor's degree
+        RM8E033:     Female: Master's degree
+        RM8E034:     Female: Professional school degree
+        RM8E035:     Female: Doctorate degree
+    Table 8:     Median Household Income in the Past 12 Months (in 2009 Inflation-Adjusted Dollars)
+        RNHE001:     Median household income in the past 12 months (in 2009 inflation-adjusted dollars)
+    Table 9:     Per Capita Income in the Past 12 Months (in 2009 Inflation-Adjusted Dollars)
+        RPAE001:     Per capita income in the past 12 months (in 2009 inflation-adjusted dollars)
+    Table 10:    Median Value (Dollars)
+        RR7E001:     Median value (dollars)
