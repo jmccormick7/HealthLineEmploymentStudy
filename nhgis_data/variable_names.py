@@ -1,14 +1,14 @@
 import csv;
 
-varnames = input("Variable Codebook (csv): ");
-data_csv = input("Data (csv): ");
-vardict = {};
+varnames = input("Variable Codebook (csv): ")
+data_csv = input("Data (csv): ")
+vardict = {}
 with open(varnames, 'r', encoding="utf8") as data:
-    csv_reader = csv.reader(data);
-    keys = next(csv_reader);
-    values = next(csv_reader);
+    csv_reader = csv.reader(data)
+    keys = next(csv_reader)
+    values = next(csv_reader)
     for key, value in zip(keys, values):
-        vardict[key] = value;
+        vardict[key] = value
 #print(vardict);
 
 # Replace values with keys' values in the data CSV
