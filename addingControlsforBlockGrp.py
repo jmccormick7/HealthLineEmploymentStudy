@@ -11,7 +11,13 @@ import numpy as np
 #         HealthLine access is defined below as any block group with more than 30% of its          #
 #         block area being within 800m of the HealthLine.                                          #
 #                                                                                                  #
+#         All jobs data is normalized to the block group populations, and now is the percent of    #
+#         the population that is employed in that category                                         #
 #                                                                                                  #
+#         Important Note: the percentages for job data, are not employment rate, it is percent     #
+#         of the total population, NOT working population, that is employed in that category.      #
+#                                                                                                  #
+#         The final dataset is saved as a csv file.                                                #
 #                                                                                                  #
 #         Author: John McCormick                                                                   #
 #         Date: March 20th, 2024                                                                   #
