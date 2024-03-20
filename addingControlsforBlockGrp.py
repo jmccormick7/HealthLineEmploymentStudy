@@ -313,13 +313,53 @@ final_09_13['pct_hasDegree'] = final_09_13['pct_associates'] + final_09_13['pct_
 
 
 final = pd.concat([final_05_08, final_09_13],axis=0)
+final['total_pop'] = round(final['total_pop'])
+## normalize job data to percentage of population 
+jobRows = ['total_jobs',
+            'total_29_and_under',
+            'total_30_54',
+            'total_55_and_over',
+            'total_under_1250per_month',
+            'total_1250_3333per_month',
+            'total_3334_and_up_per_month',
+            'agriculture_forestry_fishing_hunting',
+            'mining_quarrying_oil_gas_extraction',
+            'utilities',
+            'construction',
+            'manufacturing',
+            'wholesale_trade',
+            'retail_trade',
+            'transportation_warehousing',
+            'information',
+            'finance_insurance',
+            'real_estate_rental_leasing',
+            'professional_scientific_technical_services',
+            'management_of_companies_enterprises',
+            'admin_support_waste_mgmt_remediation_services',
+            'educational_services',
+            'health_care_social_assistance',
+            'arts_entertainment_recreation',
+            'accommodation_food_services',
+            'other_services_except_public_administration',
+            'public_administration',
+            'race_white',
+            'race_black',
+            'race_american_indian_alaska_native',
+            'race_asian',
+            'race_native_hawaiian_other_pacific_islander',
+            'race_two_or_more',
+            'ethnicity_not_hispanic_latino',
+            'ethnicity_hispanic_latino',
+            'less_than_HS',
+            'HS_GED',
+            'Some_college_or_associates_degree',
+            'Bachelors_or_higher',
+            'sex_male',
+            'sex_female']
+
+for row in jobRows:
+    final[row] = final[row] / final['total_pop']
 
 
-summary1 = final_05_08[['pctWhite', 'pct_hasDegree', 'med_home_val','HealthLine', 'After', 'total_jobs', 'total_under_1250per_month','total_1250_3333per_month','total_3334_and_up_per_month','health_care_social_assistance','accommodation_food_services' ]].groupby('HealthLine').describe()
-summary2 = final_09_13[['pctWhite', 'pct_hasDegree', 'med_home_val','HealthLine', 'After', 'total_jobs', 'total_under_1250per_month','total_1250_3333per_month','total_3334_and_up_per_month','health_care_social_assistance','accommodation_food_services' ]].groupby('HealthLine').describe()
-
-
-summary = pd.concat([summary1, summary2])
-summary.to_csv('summary.csv')
 
 final.to_csv('LEHD_data_NHGIS_controls_BlkGrp.csv')
