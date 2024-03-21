@@ -8,6 +8,7 @@ healthLineDistance.*
 HealthLineMeterDistance.*
 healthLineAccess.qmd
 summary.csv
-.ipynb 
+.ipynb
 *.ipynb
 ZillowLab/
+*.do.stswp

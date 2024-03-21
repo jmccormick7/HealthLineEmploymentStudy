@@ -89,23 +89,23 @@ jobs.drop(columns=['OBJECTID_x',
                     'icon',
                     'h_geocode'], inplace=True)
 
-nhgis05_09['pctWhite'] = nhgis05_09['RLAE002'] / nhgis05_09['RK9E001']
-nhgis05_09['pctBlack'] = nhgis05_09['RLAE003'] / nhgis05_09['RK9E001']
-nhgis05_09['pctAsian'] = nhgis05_09['RLAE005'] / nhgis05_09['RK9E001']
-nhgis05_09['pctHispanic'] = nhgis05_09['RLJE003'] /  nhgis05_09['RK9E001']
+nhgis05_09['pctWhite'] = nhgis05_09['RLAE002']
+nhgis05_09['pctBlack'] = nhgis05_09['RLAE003']
+nhgis05_09['pctAsian'] = nhgis05_09['RLAE005']
+nhgis05_09['pctHispanic'] = nhgis05_09['RLJE003']
 
 
-nhgis05_09['pctMale'] = nhgis05_09['RKYE002']/ nhgis05_09['RK9E001']
-nhgis05_09['pctFemale'] = nhgis05_09['RKYE026'] / nhgis05_09['RK9E001']
+nhgis05_09['pctMale'] = nhgis05_09['RKYE002']
+nhgis05_09['pctFemale'] = nhgis05_09['RKYE026']
 
-nhgis05_09['pct_noGED'] = (nhgis05_09['RM8E003'] + nhgis05_09['RM8E004'] + nhgis05_09['RM8E005'] + nhgis05_09['RM8E006'] + nhgis05_09['RM8E007'] + nhgis05_09['RM8E008'] + nhgis05_09['RM8E009'] + nhgis05_09['RM8E010'] + nhgis05_09['RM8E020'] + nhgis05_09['RM8E021'] + nhgis05_09['RM8E022'] + nhgis05_09['RM8E023'] + nhgis05_09['RM8E024'] + nhgis05_09['RM8E025'] + nhgis05_09['RM8E026'] + nhgis05_09['RM8E027']) / nhgis05_09['RK9E001']
-nhgis05_09['pct_hsDeg_orGED'] = (nhgis05_09['RM8E011'] + nhgis05_09['RM8E028']) / nhgis05_09['RK9E001']
-nhgis05_09['pct_someCollege'] = (nhgis05_09['RM8E012'] + nhgis05_09['RM8E013'] + nhgis05_09['RM8E029'] + nhgis05_09['RM8E030']) / nhgis05_09['RK9E001']
-nhgis05_09['pct_associates'] = (nhgis05_09['RM8E014'] + nhgis05_09['RM8E031']) / nhgis05_09['RK9E001']
-nhgis05_09['pct_bachelors'] = (nhgis05_09['RM8E015'] + nhgis05_09['RM8E032']) / nhgis05_09['RK9E001']
-nhgis05_09['pct_masters'] = (nhgis05_09['RM8E016'] + nhgis05_09['RM8E033']) / nhgis05_09['RK9E001']
-nhgis05_09['pct_professional'] = (nhgis05_09['RM8E017'] + nhgis05_09['RM8E034']) / nhgis05_09['RK9E001']
-nhgis05_09['pct_doctorate'] = (nhgis05_09['RM8E018'] + nhgis05_09['RM8E035']) / nhgis05_09['RK9E001']
+nhgis05_09['pct_noGED'] = (nhgis05_09['RM8E003'] + nhgis05_09['RM8E004'] + nhgis05_09['RM8E005'] + nhgis05_09['RM8E006'] + nhgis05_09['RM8E007'] + nhgis05_09['RM8E008'] + nhgis05_09['RM8E009'] + nhgis05_09['RM8E010'] + nhgis05_09['RM8E020'] + nhgis05_09['RM8E021'] + nhgis05_09['RM8E022'] + nhgis05_09['RM8E023'] + nhgis05_09['RM8E024'] + nhgis05_09['RM8E025'] + nhgis05_09['RM8E026'] + nhgis05_09['RM8E027'])
+nhgis05_09['pct_hsDeg_orGED'] = (nhgis05_09['RM8E011'] + nhgis05_09['RM8E028'])
+nhgis05_09['pct_someCollege'] = (nhgis05_09['RM8E012'] + nhgis05_09['RM8E013'] + nhgis05_09['RM8E029'] + nhgis05_09['RM8E030'])
+nhgis05_09['pct_associates'] = (nhgis05_09['RM8E014'] + nhgis05_09['RM8E031'])
+nhgis05_09['pct_bachelors'] = (nhgis05_09['RM8E015'] + nhgis05_09['RM8E032'])
+nhgis05_09['pct_masters'] = (nhgis05_09['RM8E016'] + nhgis05_09['RM8E033'])
+nhgis05_09['pct_professional'] = (nhgis05_09['RM8E017'] + nhgis05_09['RM8E034'])
+nhgis05_09['pct_doctorate'] = (nhgis05_09['RM8E018'] + nhgis05_09['RM8E035'])
 nhgis05_09['total_pop'] = nhgis05_09['RK9E001']
 nhgis05_09['med_home_val'] = nhgis05_09['RR7E001']
 
@@ -193,22 +193,22 @@ nhgis09_13['BLKGRPA'] = nhgis09_13['BLKGRPA'].astype(str).str.zfill(1)
 
 nhgis09_13['mergerRow']= nhgis09_13['STATEA'] + nhgis09_13['COUNTYA'] + nhgis09_13['TRACTA'] + nhgis09_13['BLKGRPA']
 
-nhgis09_13['pctWhite'] = nhgis09_13['UEQE002'] / nhgis09_13['UEPE001']
-nhgis09_13['pctBlack'] = nhgis09_13['UEQE003'] / nhgis09_13['UEPE001']
-nhgis09_13['pctAsian'] = nhgis09_13['UEQE005'] / nhgis09_13['UEPE001']
-nhgis09_13['pctHispanic'] = nhgis09_13['UEZE003'] / nhgis09_13['UEPE001']
+nhgis09_13['pctWhite'] = nhgis09_13['UEQE002']
+nhgis09_13['pctBlack'] = nhgis09_13['UEQE003']
+nhgis09_13['pctAsian'] = nhgis09_13['UEQE005']
+nhgis09_13['pctHispanic'] = nhgis09_13['UEZE003']
 
-nhgis09_13['pctMale'] = nhgis09_13['UEEE002'] / nhgis09_13['UEPE001']
-nhgis09_13['pctFemale'] = nhgis09_13['UEEE026'] / nhgis09_13['UEPE001']
+nhgis09_13['pctMale'] = nhgis09_13['UEEE002']
+nhgis09_13['pctFemale'] = nhgis09_13['UEEE026']
 
-nhgis09_13['pct_noGED'] = (nhgis09_13['UGRE003'] + nhgis09_13['UGRE004'] + nhgis09_13['UGRE005'] + nhgis09_13['UGRE006'] + nhgis09_13['UGRE007'] + nhgis09_13['UGRE008'] + nhgis09_13['UGRE009'] + nhgis09_13['UGRE010'] + nhgis09_13['UGRE020'] + nhgis09_13['UGRE021'] + nhgis09_13['UGRE022'] + nhgis09_13['UGRE023'] + nhgis09_13['UGRE024'] + nhgis09_13['UGRE025'] + nhgis09_13['UGRE026'] + nhgis09_13['UGRE027']) / nhgis09_13['UEPE001']
-nhgis09_13['pct_hsDeg_orGED'] = (nhgis09_13['UGRE011'] + nhgis09_13['UGRE028']) / nhgis09_13['UEPE001']
-nhgis09_13['pct_someCollege'] = (nhgis09_13['UGRE012'] + nhgis09_13['UGRE013'] + nhgis09_13['UGRE029'] + nhgis09_13['UGRE030']) / nhgis09_13['UEPE001']
-nhgis09_13['pct_associates'] = (nhgis09_13['UGRE014'] + nhgis09_13['UGRE031']) / nhgis09_13['UEPE001']
-nhgis09_13['pct_bachelors'] = (nhgis09_13['UGRE015'] + nhgis09_13['UGRE032']) / nhgis09_13['UEPE001']
-nhgis09_13['pct_masters'] = (nhgis09_13['UGRE016'] + nhgis09_13['UGRE033']) / nhgis09_13['UEPE001']
-nhgis09_13['pct_professional'] = (nhgis09_13['UGRE017'] + nhgis09_13['UGRE034']) / nhgis09_13['UEPE001']
-nhgis09_13['pct_doctorate'] = (nhgis09_13['UGRE018'] + nhgis09_13['UGRE035']) / nhgis09_13['UEPE001']
+nhgis09_13['pct_noGED'] = nhgis09_13['UGRE003'] + nhgis09_13['UGRE004'] + nhgis09_13['UGRE005'] + nhgis09_13['UGRE006'] + nhgis09_13['UGRE007'] + nhgis09_13['UGRE008'] + nhgis09_13['UGRE009'] + nhgis09_13['UGRE010'] + nhgis09_13['UGRE020'] + nhgis09_13['UGRE021'] + nhgis09_13['UGRE022'] + nhgis09_13['UGRE023'] + nhgis09_13['UGRE024'] + nhgis09_13['UGRE025'] + nhgis09_13['UGRE026'] + nhgis09_13['UGRE027']
+nhgis09_13['pct_hsDeg_orGED'] = (nhgis09_13['UGRE011'] + nhgis09_13['UGRE028'])
+nhgis09_13['pct_someCollege'] = (nhgis09_13['UGRE012'] + nhgis09_13['UGRE013'] + nhgis09_13['UGRE029'] + nhgis09_13['UGRE030'])
+nhgis09_13['pct_associates'] = (nhgis09_13['UGRE014'] + nhgis09_13['UGRE031'])
+nhgis09_13['pct_bachelors'] = (nhgis09_13['UGRE015'] + nhgis09_13['UGRE032'])
+nhgis09_13['pct_masters'] = (nhgis09_13['UGRE016'] + nhgis09_13['UGRE033'])
+nhgis09_13['pct_professional'] = (nhgis09_13['UGRE017'] + nhgis09_13['UGRE034'])
+nhgis09_13['pct_doctorate'] = (nhgis09_13['UGRE018'] + nhgis09_13['UGRE035'])
 nhgis09_13['total_pop'] = nhgis09_13['UEPE001']
 nhgis09_13['med_home_val'] = nhgis09_13['UMME001']
 
@@ -253,6 +253,15 @@ nhgis09_13_final = weighted_average(nhgis09_13_final, '2020_wt_pop', 'GEOID_20',
 nhgis09_13_final.drop(columns=['mergerRow', '2020_wt_pop'], inplace=True)
 nhgis09_13_final.rename(columns={'GEOID_20': 'mergerRow'}, inplace=True)
 
+## adding has degree column
+nhgis05_09_final['pct_hasDegree'] = nhgis05_09_final['pct_associates'] + nhgis05_09_final['pct_bachelors'] + nhgis05_09_final['pct_masters'] + nhgis05_09_final['pct_professional'] + nhgis05_09_final['pct_doctorate']
+nhgis09_13_final['pct_hasDegree'] = nhgis09_13_final['pct_associates'] + nhgis09_13_final['pct_bachelors'] + nhgis09_13_final['pct_masters'] + nhgis09_13_final['pct_professional'] + nhgis09_13_final['pct_doctorate']
+## Making all our pct columns into actual percent columns using the corrected total population column
+pctCols = ['pctWhite', 'pctBlack', 'pctAsian', 'pctHispanic', 'pctMale', 'pctFemale', 'pct_noGED', 'pct_hsDeg_orGED', 'pct_someCollege', 'pct_associates', 'pct_bachelors', 'pct_masters', 'pct_professional', 'pct_doctorate','pct_hasDegree']
+
+for col in pctCols:
+    nhgis05_09_final[col] = nhgis05_09_final[col] / nhgis05_09_final['total_pop']
+    nhgis09_13_final[col] = nhgis09_13_final[col] / nhgis09_13_final['total_pop']
 
 
 def aggregate_with_default(df, groupby_cols, default_agg='sum', exceptions={}):
@@ -314,13 +323,12 @@ final_09_13 = pd.merge(jobs_09_13, nhgis_09_13_final, on=['merge_year'], how='in
 
 
 
-final_05_08['pct_hasDegree'] = final_05_08['pct_associates'] + final_05_08['pct_bachelors'] + final_05_08['pct_masters'] + final_05_08['pct_professional'] + final_05_08['pct_doctorate']
-final_09_13['pct_hasDegree'] = final_09_13['pct_associates'] + final_09_13['pct_bachelors'] + final_09_13['pct_masters'] + final_09_13['pct_professional'] + final_09_13['pct_doctorate']
 
 
 final = pd.concat([final_05_08, final_09_13],axis=0)
 final['total_pop'] = round(final['total_pop'])
-## normalize job data to percentage of population 
+final = final[final['total_pop'] > 0]
+## normalize job data to percentage of population
 jobRows = ['total_jobs',
             'total_29_and_under',
             'total_30_54',
