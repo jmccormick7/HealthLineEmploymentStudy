@@ -12,3 +12,4 @@ summary.csv
 *.ipynb
 ZillowLab/
 *.do.stswp
+pyrightconfig.json
