@@ -328,9 +328,8 @@ final_09_13 = pd.merge(jobs_09_13, nhgis_09_13_final, on=['merge_year'], how='in
 final = pd.concat([final_05_08, final_09_13],axis=0)
 final['total_pop'] = round(final['total_pop'])
 final = final[final['total_pop'] > 0]
-## normalize job data to percentage of population
-jobRows = ['total_jobs',
-            'total_29_and_under',
+## normalize job data to percentage of total jobs 
+jobRows = ['total_29_and_under',
             'total_30_54',
             'total_55_and_over',
             'total_under_1250per_month',
@@ -371,8 +370,11 @@ jobRows = ['total_jobs',
             'sex_male',
             'sex_female']
 
+
 for row in jobRows:
-    final[row] = final[row] / final['total_pop']
+    final[row] = final[row] / final['total_jobs']
+
+final['total_jobs'] = final['total_jobs'] / final['total_pop']
 
 
 
