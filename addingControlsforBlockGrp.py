@@ -31,14 +31,12 @@ nhgis05_09['STATEA'] = nhgis05_09['STATEA'].astype(str).str.zfill(2)
 nhgis05_09['COUNTYA'] = nhgis05_09['COUNTYA'].astype(str).str.zfill(3)
 nhgis05_09['TRACTA'] = nhgis05_09['TRACTA'].astype(str).str.zfill(6)
 nhgis05_09['BLKGRPA'] = nhgis05_09['BLKGRPA'].astype(str).str.zfill(1)
-nhgis05_09.head()
+
 nhgis05_09['mergerRow']= nhgis05_09['STATEA'] + nhgis05_09['COUNTYA'] + nhgis05_09['TRACTA'] + nhgis05_09['BLKGRPA']
 
-nhgis05_09.head()
 
 
 jobs = pd.read_csv('LEHD_data/FinalJobData.csv')
-jobs['year'].value_counts()
 
 jobs['STATE_x'] = jobs['STATE_x'].astype(str).str.zfill(2)
 jobs['COUNTY_x'] = jobs['COUNTY_x'].astype(str).str.zfill(3)
@@ -46,7 +44,7 @@ jobs['TRACT_x'] = jobs['TRACT_x'].astype(str).str.zfill(6)
 jobs['BLKGRP_x'].value_counts()
 jobs['BLKGRP_x'] = jobs['BLKGRP_x'].astype(str).str.zfill(1)
 jobs['mergerRow'] = jobs['STATE_x'] + jobs['COUNTY_x'] + jobs['TRACT_x'] + jobs['BLKGRP_x']
-jobs[['BLKGRP_x', 'BLOCK_x', 'COUNTY_x', 'STATE_x', 'TRACT_x']].head()
+
 jobs.drop(columns=['OBJECTID_x',
                     'AREALAND',
                     'AREAWATER',
@@ -109,6 +107,8 @@ nhgis05_09['pct_doctorate'] = (nhgis05_09['RM8E018'] + nhgis05_09['RM8E035'])
 nhgis05_09['total_pop'] = nhgis05_09['RK9E001']
 nhgis05_09['med_home_val'] = nhgis05_09['RR7E001']
 
+nhgis05_09 = nhgis05_09[nhgis05_09['total_pop'] > 0]
+
 
 ## conversions
 
@@ -118,7 +118,6 @@ blk2010_2020 = pd.read_csv('crosswalk/nhgis_bg2010_bg2020_39.csv')
         bg2020gj, tr2020gj OR co2020gj:   NHGIS GISJOIN identifier for the 2020 target zone
         bg2020ge, tr2020ge OR co2020ge:   Census Bureau standard GEOID identifier for the 2020
 	                                  target zone"""
-blk2010_2020.head()
 
 blkConversion = blk2010_2020[['bg2010ge', 'bg2020ge','wt_pop']]
 blkConversion['bg2010ge'] = blkConversion['bg2010ge'].astype(str).str.zfill(12)
@@ -161,7 +160,7 @@ blk2000_2010['mergerRow'] = blk2000_2010['STATE'] + blk2000_2010['COUNTY'] + blk
 """
 blk2000_2010['2010Merger'] = blk2000_2010['bg2010ge'].astype(str).str.zfill(12)
 
-blk2000_2010.head()
+
 convert2000To2010 = blk2000_2010[['mergerRow', '2010Merger', 'wt_pop']]
 
 def weighted_average(df, weight_col, geocode_col, excl_cols=[]):
@@ -212,6 +211,7 @@ nhgis09_13['pct_doctorate'] = (nhgis09_13['UGRE018'] + nhgis09_13['UGRE035'])
 nhgis09_13['total_pop'] = nhgis09_13['UEPE001']
 nhgis09_13['med_home_val'] = nhgis09_13['UMME001']
 
+nhgis09_13 = nhgis09_13[nhgis09_13['total_pop'] > 0]
 
 jobs_05_08 = jobs[jobs['year'] < 2009]
 jobs_05_08 = jobs_05_08[jobs_05_08['STATE_x'] == '39']
@@ -230,6 +230,8 @@ nhgis09_13_final = nhgis09_13[['mergerRow', 'pctWhite', 'pctBlack', 'pctAsian', 
 nhgis05_09_final = nhgis05_09_final.dropna()
 nhgis09_13_final = nhgis09_13_final.dropna()
 
+print(nhgis05_09_final['total_pop'].value_counts())
+print(nhgis09_13_final['total_pop'].value_counts())
 
 
 nhgis05_09_final = pd.merge(nhgis05_09_final, convert2000To2010, on='mergerRow', how='inner')
@@ -265,17 +267,15 @@ for col in pctCols:
 
 
 def aggregate_with_default(df, groupby_cols, default_agg='sum', exceptions={}):
-    agg_dict = {col: default_agg for col in df.columns if col not in groupby_cols}
-    for col, agg in agg_dict.items():
-        if df[col].dtype == 'string':
-            agg_dict[col] = 'first'
+    numeric_cols = df.select_dtypes(include='number').columns
+    agg_dict = {col: default_agg if col in numeric_cols else 'first' for col in df.columns if col not in groupby_cols}
     agg_dict.update(exceptions)
     return df.groupby(groupby_cols).agg(agg_dict).reset_index()
 
-jobs_05_08 = aggregate_with_default(jobs_05_08, ['mergerRow', 'year'], exceptions={'HealthLine': 'mean', 'After':'mean', 'healthline_x_after':'mean'})
+jobs_05_08 = aggregate_with_default(jobs_05_08, ['mergerRow', 'year'], exceptions={'HealthLine': 'mean', 'After': 'mean', 'healthline_x_after': 'mean'})
+print(jobs_05_08['STATE_x'].value_counts())
+jobs_09_13 = aggregate_with_default(jobs_09_13, ['mergerRow', 'year'], exceptions={'HealthLine': 'mean', 'After': 'mean', 'healthline_x_after': 'mean'})
 
-
-jobs_09_13 = aggregate_with_default(jobs_09_13, ['mergerRow', 'year'], exceptions={'HealthLine': 'mean', 'After':'mean', 'healthline_x_after':'mean'})
 
 jobs_05_08['accessArea'] = jobs_05_08['bufferArea'] / jobs_05_08['BlockArea']
 jobs_09_13['accessArea'] = jobs_09_13['bufferArea'] / jobs_09_13['BlockArea']
@@ -328,7 +328,7 @@ final_09_13 = pd.merge(jobs_09_13, nhgis_09_13_final, on=['merge_year'], how='in
 final = pd.concat([final_05_08, final_09_13],axis=0)
 final['total_pop'] = round(final['total_pop'])
 final = final[final['total_pop'] > 0]
-## normalize job data to percentage of total jobs 
+## normalize job data to percentage of total jobs
 jobRows = ['total_29_and_under',
             'total_30_54',
             'total_55_and_over',
@@ -376,6 +376,6 @@ for row in jobRows:
 
 final['total_jobs'] = final['total_jobs'] / final['total_pop']
 
-
+final = final[final['total_jobs'] < 1]
 
 final.to_csv('LEHD_data_NHGIS_controls_BlkGrp.csv')
