@@ -1,5 +1,12 @@
 # Code and Data Repository for `The WealthLine—Examining the Effect of the HealthLine Bus Rapid Transit on Resident Employment`
 
+> John Cullen Nagura McCormick 
+>> Department of Computer and Data Sciences, Case Western Reserve University
+>> Department of Economics, Case Western Reserve University
+
+> Dominic Barredo
+>> Department of Economics, Case Western Reserve University
+
 ### All data processing is done in Python using the following libraries:
 * `numpy`
 * `pandas`

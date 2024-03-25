@@ -13,3 +13,4 @@ summary.csv
 ZillowLab/
 *.do.stswp
 pyrightconfig.json
+*.png
