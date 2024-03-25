@@ -1,5 +1,7 @@
 # Code and Data Repository for `The WealthLine—Examining the Effect of the HealthLine Bus Rapid Transit on Resident Employment`
 
+### Authors
+
 **John Cullen Nagura McCormick**
 > Department of Computer and Data Sciences, Case Western Reserve University  
 > Department of Economics, Case Western Reserve University
