@@ -45,6 +45,8 @@ jobs['BLKGRP_x'].value_counts()
 jobs['BLKGRP_x'] = jobs['BLKGRP_x'].astype(str).str.zfill(1)
 jobs['mergerRow'] = jobs['STATE_x'] + jobs['COUNTY_x'] + jobs['TRACT_x'] + jobs['BLKGRP_x']
 
+
+
 jobs.drop(columns=['OBJECTID_x',
                     'AREALAND',
                     'AREAWATER',
@@ -106,9 +108,14 @@ nhgis05_09['pct_professional'] = (nhgis05_09['RM8E017'] + nhgis05_09['RM8E034'])
 nhgis05_09['pct_doctorate'] = (nhgis05_09['RM8E018'] + nhgis05_09['RM8E035'])
 nhgis05_09['total_pop'] = nhgis05_09['RK9E001']
 nhgis05_09['med_home_val'] = nhgis05_09['RR7E001']
+nhgis05_09['pctUnder18'] = nhgis05_09['RKYE003'] + nhgis05_09['RKYE004'] + nhgis05_09['RKYE005'] + nhgis05_09['RKYE006'] + nhgis05_09['RKYE027'] + nhgis05_09['RKYE028'] + nhgis05_09['RKYE029'] + nhgis05_09['RKYE030']
+nhgis05_09['pctOver65'] = nhgis05_09['RKYE020'] + nhgis05_09['RKYE021'] + nhgis05_09['RKYE022'] + nhgis05_09['RKYE023'] + nhgis05_09['RKYE024'] + nhgis05_09['RKYE025'] + nhgis05_09['RKYE044'] + nhgis05_09['RKYE045'] + nhgis05_09['RKYE046'] + nhgis05_09['RKYE047'] + nhgis05_09['RKYE048'] + nhgis05_09['RKYE049']
 
 nhgis05_09 = nhgis05_09[nhgis05_09['total_pop'] > 0]
 
+## Normalize median home value to 2013 dollars using adjustment factor 
+## Adjustment factor gotten from Table 3 on https://highered.ipums.org/highered/cpi-u.shtml
+nhgis05_09['med_home_val'] = nhgis05_09['med_home_val'] * 1.086
 
 ## conversions
 
@@ -161,6 +168,7 @@ blk2000_2010['mergerRow'] = blk2000_2010['STATE'] + blk2000_2010['COUNTY'] + blk
 blk2000_2010['2010Merger'] = blk2000_2010['bg2010ge'].astype(str).str.zfill(12)
 
 
+
 convert2000To2010 = blk2000_2010[['mergerRow', '2010Merger', 'wt_pop']]
 
 def weighted_average(df, weight_col, geocode_col, excl_cols=[]):
@@ -210,6 +218,8 @@ nhgis09_13['pct_professional'] = (nhgis09_13['UGRE017'] + nhgis09_13['UGRE034'])
 nhgis09_13['pct_doctorate'] = (nhgis09_13['UGRE018'] + nhgis09_13['UGRE035'])
 nhgis09_13['total_pop'] = nhgis09_13['UEPE001']
 nhgis09_13['med_home_val'] = nhgis09_13['UMME001']
+nhgis09_13['pctUnder18'] = nhgis09_13['UEEM003'] + nhgis09_13['UEEM004'] + nhgis09_13['UEEM005'] + nhgis09_13['UEEM006'] + nhgis09_13['UEEM027'] + nhgis09_13['UEEM028'] + nhgis09_13['UEEM029'] + nhgis09_13['UEEM030']
+nhgis09_13['pctOver65'] = nhgis09_13['UEEM020'] + nhgis09_13['UEEM021'] + nhgis09_13['UEEM022'] + nhgis09_13['UEEM023'] + nhgis09_13['UEEM024'] + nhgis09_13['UEEM025'] + nhgis09_13['UEEM044'] + nhgis09_13['UEEM045'] + nhgis09_13['UEEM046'] + nhgis09_13['UEEM047'] + nhgis09_13['UEEM048'] + nhgis09_13['UEEM049']
 
 nhgis09_13 = nhgis09_13[nhgis09_13['total_pop'] > 0]
 
@@ -220,25 +230,19 @@ jobs_09_13 = jobs[jobs['year'] > 2008]
 jobs_09_13 = jobs_09_13[jobs_09_13['STATE_x'] == '39']
 jobs_09_13 = jobs_09_13[jobs_09_13['COUNTY_x'] == '035']
 
-nhgis05_09 = nhgis05_09[nhgis05_09['STATEA'] == '39']
-nhgis09_13 = nhgis09_13[nhgis09_13['STATEA'] == '39']
-nhgis05_09 = nhgis05_09[nhgis05_09['COUNTYA'] == '035']
-nhgis09_13 = nhgis09_13[nhgis09_13['COUNTYA'] == '035']
-nhgis05_09_final = nhgis05_09[['mergerRow', 'pctWhite', 'pctBlack', 'pctAsian', 'pctHispanic', 'pctMale', 'pctFemale', 'pct_noGED', 'pct_hsDeg_orGED', 'pct_someCollege', 'pct_associates', 'pct_bachelors', 'pct_masters', 'pct_professional', 'pct_doctorate', 'med_home_val','total_pop']]
-nhgis09_13_final = nhgis09_13[['mergerRow', 'pctWhite', 'pctBlack', 'pctAsian', 'pctHispanic', 'pctMale', 'pctFemale', 'pct_noGED', 'pct_hsDeg_orGED', 'pct_someCollege', 'pct_associates', 'pct_bachelors', 'pct_masters', 'pct_professional', 'pct_doctorate', 'med_home_val', 'total_pop']]
+
+nhgis05_09_final = nhgis05_09[['mergerRow', 'pctWhite', 'pctBlack', 'pctAsian', 'pctHispanic', 'pctMale', 'pctFemale', 'pct_noGED', 'pct_hsDeg_orGED', 'pct_someCollege', 'pct_associates', 'pct_bachelors', 'pct_masters', 'pct_professional', 'pct_doctorate', 'med_home_val','total_pop', 'pctUnder18', 'pctOver65']]
+nhgis09_13_final = nhgis09_13[['mergerRow', 'pctWhite', 'pctBlack', 'pctAsian', 'pctHispanic', 'pctMale', 'pctFemale', 'pct_noGED', 'pct_hsDeg_orGED', 'pct_someCollege', 'pct_associates', 'pct_bachelors', 'pct_masters', 'pct_professional', 'pct_doctorate', 'med_home_val', 'total_pop', 'pctUnder18', 'pctOver65']]
 
 nhgis05_09_final = nhgis05_09_final.dropna()
 nhgis09_13_final = nhgis09_13_final.dropna()
 
-print(nhgis05_09_final['total_pop'].value_counts())
-print(nhgis09_13_final['total_pop'].value_counts())
+
 
 
 nhgis05_09_final = pd.merge(nhgis05_09_final, convert2000To2010, on='mergerRow', how='inner')
 nhgis05_09_final = nhgis05_09_final.dropna()
-
 nhgis05_09_final = weighted_average(nhgis05_09_final, 'wt_pop', '2010Merger', ['mergerRow'])
-
 nhgis05_09_final.drop(columns=['mergerRow', 'wt_pop'], inplace=True)
 nhgis05_09_final.rename(columns={'2010Merger': 'mergerRow'}, inplace=True)
 
@@ -255,11 +259,14 @@ nhgis09_13_final = weighted_average(nhgis09_13_final, '2020_wt_pop', 'GEOID_20',
 nhgis09_13_final.drop(columns=['mergerRow', '2020_wt_pop'], inplace=True)
 nhgis09_13_final.rename(columns={'GEOID_20': 'mergerRow'}, inplace=True)
 
+
+
+
 ## adding has degree column
 nhgis05_09_final['pct_hasDegree'] = nhgis05_09_final['pct_associates'] + nhgis05_09_final['pct_bachelors'] + nhgis05_09_final['pct_masters'] + nhgis05_09_final['pct_professional'] + nhgis05_09_final['pct_doctorate']
 nhgis09_13_final['pct_hasDegree'] = nhgis09_13_final['pct_associates'] + nhgis09_13_final['pct_bachelors'] + nhgis09_13_final['pct_masters'] + nhgis09_13_final['pct_professional'] + nhgis09_13_final['pct_doctorate']
 ## Making all our pct columns into actual percent columns using the corrected total population column
-pctCols = ['pctWhite', 'pctBlack', 'pctAsian', 'pctHispanic', 'pctMale', 'pctFemale', 'pct_noGED', 'pct_hsDeg_orGED', 'pct_someCollege', 'pct_associates', 'pct_bachelors', 'pct_masters', 'pct_professional', 'pct_doctorate','pct_hasDegree']
+pctCols = ['pctWhite', 'pctBlack', 'pctAsian', 'pctHispanic', 'pctMale', 'pctFemale', 'pct_noGED', 'pct_hsDeg_orGED', 'pct_someCollege', 'pct_associates', 'pct_bachelors', 'pct_masters', 'pct_professional', 'pct_doctorate','pct_hasDegree', 'pctUnder18', 'pctOver65']
 
 for col in pctCols:
     nhgis05_09_final[col] = nhgis05_09_final[col] / nhgis05_09_final['total_pop']
@@ -322,8 +329,8 @@ final_05_08 = pd.merge(jobs_05_08, nhgis_05_09_final, on=['merge_year'], how='in
 final_09_13 = pd.merge(jobs_09_13, nhgis_09_13_final, on=['merge_year'], how='inner')
 
 
-
-
+preTreat = final_05_08['mergerRow_x'].unique()
+postTreat = final_09_13['mergerRow_x'].unique()
 
 final = pd.concat([final_05_08, final_09_13],axis=0)
 final['total_pop'] = round(final['total_pop'])
@@ -377,5 +384,12 @@ for row in jobRows:
 final['total_jobs'] = final['total_jobs'] / final['total_pop']
 
 final = final[final['total_jobs'] < 1]
+
+for mergerRow in preNotPost:
+    final.drop(final[final['mergerRow_x'] == mergerRow].index, inplace=True)
+for mergerRow in postNotPre:
+    final.drop(final[final['mergerRow_x'] == mergerRow].index, inplace=True)
+
+
 
 final.to_csv('LEHD_data_NHGIS_controls_BlkGrp.csv')

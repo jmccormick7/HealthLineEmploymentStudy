@@ -14,3 +14,4 @@ ZillowLab/
 *.do.stswp
 pyrightconfig.json
 *.png
+*.tex
