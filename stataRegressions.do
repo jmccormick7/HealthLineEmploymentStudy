@@ -12,16 +12,14 @@ g logOver3333 = log(total_3334_and_up_per_month)
 g logHealth = log(health_care_social_assistance)
 g logService = log(accommodation_food_services)
 
-reg total_jobs healthline after healthline_x_after pctwhite pctblack pct_hasdegree
+reg total_jobs healthline after healthline_x_after pctwhite pctblack pct_hasdegree pct_noged med_home_val 
+ 
+reg health_care_social_assistance healthline after healthline_x_after pctwhite pctblack pct_hasdegree pct_noged med_home_val 
 
-reg total_under_1250per_month healthline after healthline_x_after pctwhite pctblack pct_hasdegree
+reg accommodation_food_services healthline after healthline_x_after pctwhite pctblack pct_hasdegree pct_noged med_home_val 
 
-reg total_1250_3333per_month healthline after healthline_x_after pctwhite pctblack pct_hasdegree
+reg educational_services healthline after healthline_x_after pctwhite pctblack pct_hasdegree pct_noged med_home_val 
 
-reg total_3334_and_up_per_month healthline after healthline_x_after pctwhite pctblack pct_hasdegree
+reg professional_scientific_technica healthline after healthline_x_after pctwhite pctblack pct_hasdegree pct_noged med_home_val 
 
-reg health_care_social_assistance healthline after healthline_x_after pctwhite pctblack pct_hasdegree
-
-reg accommodation_food_services healthline after healthline_x_after pctwhite pctblack pct_hasdegree
-
-
+reg information healthline after healthline_x_after pctwhite pctblack pct_hasdegree pct_noged med_home_val 

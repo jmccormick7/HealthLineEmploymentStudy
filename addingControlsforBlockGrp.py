@@ -24,6 +24,12 @@ import numpy as np
 #                                                                                                  #
 ####################################################################################################
 
+household05_09 = pd.read_csv('householdData/nhgis0002_ds195_20095_blck_grp.csv')
+household05_09['numHouseholds'] = household05_09['RL4E001']
+household05_09 = household05_09[['GISJOIN', 'numHouseholds']]
+household_09_13 = pd.read_csv('householdData/nhgis0002_ds201_20135_blck_grp.csv')
+household_09_13['numHouseholds'] = household_09_13['UFME001']
+household_09_13 = household_09_13[['GISJOIN', 'numHouseholds']]
 
 
 nhgis05_09 = pd.read_csv('nhgis_data/nhgis0003_ds195_20095_blck_grp.csv')
@@ -34,6 +40,7 @@ nhgis05_09['BLKGRPA'] = nhgis05_09['BLKGRPA'].astype(str).str.zfill(1)
 
 nhgis05_09['mergerRow']= nhgis05_09['STATEA'] + nhgis05_09['COUNTYA'] + nhgis05_09['TRACTA'] + nhgis05_09['BLKGRPA']
 
+nhgis05_09 = pd.merge(nhgis05_09, household05_09, on='GISJOIN', how='inner')
 
 
 jobs = pd.read_csv('LEHD_data/FinalJobData.csv')
@@ -191,7 +198,7 @@ def weighted_average(df, weight_col, geocode_col, excl_cols=[]):
     return weighted_df
 
 nhgis09_13 = pd.read_csv('nhgis_data/nhgis0003_ds201_20135_blck_grp.csv')
-
+nhgis09_13 = pd.merge(nhgis09_13, household_09_13, on='GISJOIN', how='inner')
 nhgis09_13['STATEA'] = nhgis09_13['STATEA'].astype(str).str.zfill(2)
 nhgis09_13['COUNTYA'] = nhgis09_13['COUNTYA'].astype(str).str.zfill(3)
 nhgis09_13['TRACTA'] = nhgis09_13['TRACTA'].astype(str).str.zfill(6)
@@ -231,8 +238,8 @@ jobs_09_13 = jobs_09_13[jobs_09_13['STATE_x'] == '39']
 jobs_09_13 = jobs_09_13[jobs_09_13['COUNTY_x'] == '035']
 
 
-nhgis05_09_final = nhgis05_09[['mergerRow', 'pctWhite', 'pctBlack', 'pctAsian', 'pctHispanic', 'pctMale', 'pctFemale', 'pct_noGED', 'pct_hsDeg_orGED', 'pct_someCollege', 'pct_associates', 'pct_bachelors', 'pct_masters', 'pct_professional', 'pct_doctorate', 'med_home_val','total_pop', 'pctUnder18', 'pctOver65']]
-nhgis09_13_final = nhgis09_13[['mergerRow', 'pctWhite', 'pctBlack', 'pctAsian', 'pctHispanic', 'pctMale', 'pctFemale', 'pct_noGED', 'pct_hsDeg_orGED', 'pct_someCollege', 'pct_associates', 'pct_bachelors', 'pct_masters', 'pct_professional', 'pct_doctorate', 'med_home_val', 'total_pop', 'pctUnder18', 'pctOver65']]
+nhgis05_09_final = nhgis05_09[['mergerRow', 'pctWhite', 'pctBlack', 'pctAsian', 'pctHispanic', 'pctMale', 'pctFemale', 'pct_noGED', 'pct_hsDeg_orGED', 'pct_someCollege', 'pct_associates', 'pct_bachelors', 'pct_masters', 'pct_professional', 'pct_doctorate', 'med_home_val','total_pop', 'pctUnder18', 'pctOver65', 'numHouseholds']]
+nhgis09_13_final = nhgis09_13[['mergerRow', 'pctWhite', 'pctBlack', 'pctAsian', 'pctHispanic', 'pctMale', 'pctFemale', 'pct_noGED', 'pct_hsDeg_orGED', 'pct_someCollege', 'pct_associates', 'pct_bachelors', 'pct_masters', 'pct_professional', 'pct_doctorate', 'med_home_val', 'total_pop', 'pctUnder18', 'pctOver65', 'numHouseholds']]
 
 nhgis05_09_final = nhgis05_09_final.dropna()
 nhgis09_13_final = nhgis09_13_final.dropna()
@@ -267,10 +274,6 @@ nhgis05_09_final['pct_hasDegree'] = nhgis05_09_final['pct_associates'] + nhgis05
 nhgis09_13_final['pct_hasDegree'] = nhgis09_13_final['pct_associates'] + nhgis09_13_final['pct_bachelors'] + nhgis09_13_final['pct_masters'] + nhgis09_13_final['pct_professional'] + nhgis09_13_final['pct_doctorate']
 ## Making all our pct columns into actual percent columns using the corrected total population column
 pctCols = ['pctWhite', 'pctBlack', 'pctAsian', 'pctHispanic', 'pctMale', 'pctFemale', 'pct_noGED', 'pct_hsDeg_orGED', 'pct_someCollege', 'pct_associates', 'pct_bachelors', 'pct_masters', 'pct_professional', 'pct_doctorate','pct_hasDegree', 'pctUnder18', 'pctOver65']
-
-for col in pctCols:
-    nhgis05_09_final[col] = nhgis05_09_final[col] / nhgis05_09_final['total_pop']
-    nhgis09_13_final[col] = nhgis09_13_final[col] / nhgis09_13_final['total_pop']
 
 
 def aggregate_with_default(df, groupby_cols, default_agg='sum', exceptions={}):
@@ -332,6 +335,10 @@ final_09_13 = pd.merge(jobs_09_13, nhgis_09_13_final, on=['merge_year'], how='in
 preTreat = final_05_08['mergerRow_x'].unique()
 postTreat = final_09_13['mergerRow_x'].unique()
 
+preNotPost = np.setdiff1d(preTreat, postTreat)
+postNotPre = np.setdiff1d(postTreat, preTreat)
+
+
 final = pd.concat([final_05_08, final_09_13],axis=0)
 final['total_pop'] = round(final['total_pop'])
 final = final[final['total_pop'] > 0]
@@ -339,9 +346,7 @@ final = final[final['total_pop'] > 0]
 jobRows = ['total_29_and_under',
             'total_30_54',
             'total_55_and_over',
-            'total_under_1250per_month',
-            'total_1250_3333per_month',
-            'total_3334_and_up_per_month',
+            
             'agriculture_forestry_fishing_hunting',
             'mining_quarrying_oil_gas_extraction',
             'utilities',
@@ -362,10 +367,7 @@ jobRows = ['total_29_and_under',
             'accommodation_food_services',
             'other_services_except_public_administration',
             'public_administration',
-            'race_white',
-            'race_black',
             'race_american_indian_alaska_native',
-            'race_asian',
             'race_native_hawaiian_other_pacific_islander',
             'race_two_or_more',
             'ethnicity_not_hispanic_latino',
@@ -377,11 +379,33 @@ jobRows = ['total_29_and_under',
             'sex_male',
             'sex_female']
 
+## Before percents become percents get effective employment rates by race
+final['race_white'] = np.where(final['pctWhite'] != 0, final['race_white'] / final['pctWhite'], 0)
+final['race_white'] = np.where(final['race_white'] > 1, 0, final['race_white'])
+final['race_black'] = np.where(final['pctBlack'] != 0, final['race_black'] / final['pctBlack'], 0)
+final['race_black'] = np.where(final['race_black']> 1, 0, final['race_black'])
+final['race_asian'] = np.where(final['pctAsian'] != 0, final['race_asian'] / final['pctAsian'], 0)
+final['race_asian'] = np.where(final['race_asian'] > 1, 0, final['race_asian'])
 
 for row in jobRows:
     final[row] = final[row] / final['total_jobs']
 
+incomeRows = ['total_under_1250per_month',
+            'total_1250_3333per_month',
+            'total_3334_and_up_per_month']
+
+for row in incomeRows:
+    final[row] = final[row] / final['total_jobs']
+
+for col in pctCols:
+    final[col] = final[col] / final['total_pop']
+
 final['total_jobs'] = final['total_jobs'] / final['total_pop']
+
+final['averageFamilySize'] = final['total_pop'] / final['numHouseholds']
+
+
+
 
 final = final[final['total_jobs'] < 1]
 
