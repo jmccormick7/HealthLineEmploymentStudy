@@ -120,7 +120,7 @@ nhgis05_09['pctOver65'] = nhgis05_09['RKYE020'] + nhgis05_09['RKYE021'] + nhgis0
 
 nhgis05_09 = nhgis05_09[nhgis05_09['total_pop'] > 0]
 
-## Normalize median home value to 2013 dollars using adjustment factor 
+## Normalize median home value to 2013 dollars using adjustment factor
 ## Adjustment factor gotten from Table 3 on https://highered.ipums.org/highered/cpi-u.shtml
 nhgis05_09['med_home_val'] = nhgis05_09['med_home_val'] * 1.086
 
@@ -346,7 +346,7 @@ final = final[final['total_pop'] > 0]
 jobRows = ['total_29_and_under',
             'total_30_54',
             'total_55_and_over',
-            
+
             'agriculture_forestry_fishing_hunting',
             'mining_quarrying_oil_gas_extraction',
             'utilities',
