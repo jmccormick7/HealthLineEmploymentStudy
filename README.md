@@ -2,7 +2,6 @@
 
 ***The WealthLine—Examining the Effect of the HealthLine Bus Rapid Transit on Resident Employment*** was presented as a working paper at the **Federal Reserve Bank of Cleveland** on April 19th, 2024 as part of the *Economic Scholars Program*. 
 
-### Publishing Author
 
 **John Cullen Nagura McCormick**
 > Department of Computer and Data Sciences, Case Western Reserve University  
